@@ -10,6 +10,12 @@ EnemyCalifornian = function(index,game,x,y) {
     },2000,'Linear',true,0,100,true);
     
     this.californian.body.collideWorldBounds = true;
+    this.enableBody = true;
     
-    
+      this.maxHealth = 16;
+      this.currHealth = 16;
+      this.attackDamage = 4;
+      this.attackRange = 8;
+      this.lootTable = [];
+      this.canAttack = true;
 }
