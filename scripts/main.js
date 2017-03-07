@@ -11,19 +11,24 @@ Main.prototype = {
   create: function(){
     game.add.sprite(0, 0, 'background');
     player = game.add.sprite(32, game.world.height - 150, 'player');
+    player.health = 10;
     game.physics.arcade.enable(player);
+    player.enableBody = true;
     player.body.collideWorldBounds = true;
+    
     cursors = game.input.keyboard.createCursorKeys();
 
-    enemies = game.add.group();
-    enemies.create(new EnemyCalifornian(0,game,player.x+100,player.y+100));
-    
-    new EnemyCalifornian(0,game,player.x+100,player.y+100);
+    createMonster();
+
 
    },
   update: function(){
+    // game.physics.arcade.collide(enemy, player);
+     game.physics.arcade.collide(enemy, player, collisionDetection, null, this);
     player.body.velocity.x = 0;
     player.body.velocity.y = 0;
+    enemy.body.velocity.x = 0.1;
+    enemy.body.velocity.y = 0.1;
     
     if(cursors.left.isDown){
       player.body.velocity.x = -100;
