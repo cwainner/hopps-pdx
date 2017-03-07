@@ -1,19 +1,21 @@
-$(function(){
-   var game = new Phaser.Game(800, 600, Phaser.AUTO, 'drawArea', {preload: preload, create: create, update: update});
-   
-   function preload(){
+Main = function(){
+  
+};
+
+Main.prototype = {
+  preload: function(){
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.load.image('background', 'assets/background.png');
     game.load.image('player', 'assets/player.png');
-   }
-   function create(){
+  },
+  create: function(){
     game.add.sprite(0, 0, 'background');
     player = game.add.sprite(32, game.world.height - 150, 'player');
     game.physics.arcade.enable(player);
     player.body.collideWorldBounds = true;
     cursors = game.input.keyboard.createCursorKeys();
-   }
-   function update(){
+  },
+  update: function(){
     player.body.velocity.x = 0;
     player.body.velocity.y = 0;
     
@@ -22,15 +24,26 @@ $(function(){
     } else if(cursors.right.isDown){
       player.body.velocity.x = 100;
     } else{
+      player.animations.stop();
       player.frame = 4;
     }
     
-    if (cursors.up.isDown){
+    if(cursors.up.isDown){
       player.body.velocity.y = -100;
-    } else if (cursors.down.isDown){
+    } else if(cursors.down.isDown){
       player.body.velocity.y = 100;
     } else{
+      player.animations.stop();
       player.frame = 4;
     }
-   }
+  }
+}
+
+
+$(function(){
+  window.game = new Phaser.Game(800, 600, Phaser.AUTO, 'drawArea');
+   
+  game.state.add('Main', Main);
+  game.state.start('Main');
+   
 });
