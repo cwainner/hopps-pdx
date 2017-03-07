@@ -1,4 +1,6 @@
-function Game(){}
+function Game(){
+	this.bodies = [];
+}
 
 Game.prototype = {
   preload: function(){
@@ -15,20 +17,27 @@ Game.prototype = {
     game.physics.arcade.enable(player);
     player.enableBody = true;
     player.body.collideWorldBounds = true;
+		enemies = game.add.group();
     
     cursors = game.input.keyboard.createCursorKeys();
 
-    createMonster();
+    createMonsters();
 
 
    },
   update: function(){
     // game.physics.arcade.collide(enemy, player);
-     game.physics.arcade.collide(enemy, player, collisionDetection, null, this);
+//    game.physics.arcade.collide(enemies, player, collisionDetection, null, this);
     player.body.velocity.x = 0;
     player.body.velocity.y = 0;
-    enemy.body.velocity.x = 0.1;
-    enemy.body.velocity.y = 0.1;
+		enemies.forEach(function(enemy){
+			game.physics.arcade.collide(enemy, player, collisionDetection, null, this);
+			enemy.body.velocity.x = 0;
+			enemy.body.velocity.y = 0;
+			game.physics.arcade.moveToObject(enemy, player, 30);
+		})
+//    enemy.body.velocity.x = 0.1;
+//    enemy.body.velocity.y = 0.1;
     
     if(cursors.left.isDown){
       player.body.velocity.x = -100;
