@@ -1,3 +1,4 @@
+
 function Main(){}
 
 Main.prototype = {
@@ -15,9 +16,11 @@ Main.prototype = {
     player.body.collideWorldBounds = true;
     cursors = game.input.keyboard.createCursorKeys();
 
+    enemies = game.add.group();
+    enemies.push(new EnemyCalifornian(0,game,player.x+100,player.y+100));
     
     new EnemyCalifornian(0,game,player.x+100,player.y+100);
-    
+
    },
   update: function(){
     player.body.velocity.x = 0;
