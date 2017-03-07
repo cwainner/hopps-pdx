@@ -9,10 +9,7 @@ Main.prototype = {
     game.load.image('player', 'assets/player.png');
 
     game.load.image('californian', 'assets/monster.png');
-   }
-   function create(){
-
-  },
+   },
   create: function(){
 
     game.add.sprite(0, 0, 'background');
@@ -24,10 +21,7 @@ Main.prototype = {
     
     new EnemyCalifornian(0,game,player.x+100,player.y+100);
     
-   }
-   function update(){
-
-  },
+   },
   update: function(){
 
     player.body.velocity.x = 0;
