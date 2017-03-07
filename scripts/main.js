@@ -14,11 +14,12 @@ Main.prototype = {
     game.physics.arcade.enable(player);
     player.body.collideWorldBounds = true;
     cursors = game.input.keyboard.createCursorKeys();
-  },
-  update: function(){
+
     
     new EnemyCalifornian(0,game,player.x+100,player.y+100);
     
+   },
+  update: function(){
     player.body.velocity.x = 0;
     player.body.velocity.y = 0;
     
