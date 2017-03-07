@@ -1,9 +1,9 @@
-# _Zelda-PDX_
+# _Hopps-PDX_
 
 ### _A Zelda-style game about a man named Hopps, who has many misadventures in Portland._
 _Feb. 28, 2017_
 
-Link to Github: <https://github.com/cwainner/Zelda-PDX>
+Link to Github: <https://github.com/cwainner/hopps-pdx>
 
 #### By _Josh Linton, Chris Wainner, Dallas Slaughter, and Clifford Grimmell_
 
@@ -19,12 +19,12 @@ _Placeholder_
 
 ## Setup/Installation Requirements
 
-_Download/clone project from Github (git clone https://github.com/cwainner/Zelda-PDX)_  
+_Download/clone project from Github (git clone https://github.com/cwainner/hopps-pdx)_  
 _html files should be in the top folder,_  
 _css files should be in the css folder,_  
 _javascript files should be located in the js folder,_  
 _any images should be in the img folder._  
-_Switch to top folder (will be Zelda-PDX/)_  
+_Switch to top folder (will be hopps-pdx/)_  
 _open index.html from portfolio folder._
 
 ## Known Bugs
