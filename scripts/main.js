@@ -1,4 +1,3 @@
-
 function Main(){}
 
 Main.prototype = {
@@ -46,11 +45,13 @@ Main.prototype = {
   }
 };
 
-function StartMenu(){}
+function Start(){}
 
-StartMenu.prototype = {
+Start.prototype = {
   loadScripts: function(){
     game.load.script('style', 'scripts/style.js');
+    game.load.script('monsters', 'scripts/monsters.js');
+    game.load.script('menus', 'scripts/menus.js');
   },
   
   addMenuOption: function(text, callback){
@@ -103,9 +104,7 @@ StartMenu.prototype = {
 $(function(){
   window.game = new Phaser.Game(800, 600, Phaser.AUTO, 'drawArea');
    
-  game.state.add('StartMenu', StartMenu);
+  game.state.add('Start', Start);
   game.state.add('Main', Main);
-  game.state.start('StartMenu');
-  // game.state.start('Main');
-   
+  game.state.start('Start');
 });
