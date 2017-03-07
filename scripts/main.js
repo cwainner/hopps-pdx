@@ -7,10 +7,7 @@ Main.prototype = {
     game.load.image('player', 'assets/player.png');
 
     game.load.image('californian', 'assets/monster.png');
-   }
-   function create(){
-
-  },
+   },
   create: function(){
 
     game.add.sprite(0, 0, 'background');
@@ -22,10 +19,7 @@ Main.prototype = {
     
     new EnemyCalifornian(0,game,player.x+100,player.y+100);
     
-   }
-   function update(){
-
-  },
+   },
   update: function(){
 
     player.body.velocity.x = 0;
@@ -54,18 +48,36 @@ Main.prototype = {
 function StartMenu(){}
 
 StartMenu.prototype = {
+  loadScripts: function(){
+    game.load.script('style', 'scripts/style.js');
+  },
+  
+  addMenuOption: function(text, callback){
+    var txt = game.add.text(30, (this.optionCount*80) + 200, text, style.navitem.default);
+    txt.inputEnabled = true;
+    txt.events.onInputUp.add(callback);
+    txt.events.onInputOut.add(function(target){
+      target.setStyle(style.navitem.default);
+    });
+    txt.events.onInputOver.add(function(target){
+      target.setStyle(style.navitem.hover);
+    });
+    this.optionCount++;
+  },
+  
   init: function(){
     this.titleText = game.make.text(game.world.centerX, 100, "Game Title", {
       font: "bold 60pt Arial",
-      fill: "#FFFFFF",
+      fill: "white",
       align: "center"
     });
     this.titleText.setShadow(3, 3, 'rgba(0, 0, 0, 0.5)', 5);
     this.titleText.anchor.set(0.5);
+    this.optionCount = 1;
   },
   
   preload: function(){
-    
+    this.loadScripts();
   },
   
   create: function(){
@@ -73,7 +85,16 @@ StartMenu.prototype = {
     
     // game.add.sprite(0, 0, 'menu-bg');
     game.add.existing(this.titleText);
-    // var txt = game.add.text(30, 280, )
+    
+    this.addMenuOption('Start', function(){
+      game.state.start('Main');
+    });
+    this.addMenuOption('Options', function(){
+      // game.state.start('Main');
+    });
+    this.addMenuOption('Credits', function(){
+      // game.state.start('Main');
+    });
   }
 };
 
