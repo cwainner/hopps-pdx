@@ -1,4 +1,3 @@
-
 function Main(){}
 
 Main.prototype = {
@@ -6,10 +5,10 @@ Main.prototype = {
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.load.image('background', 'assets/background.png');
     game.load.image('player', 'assets/player.png');
+    game.load.image('californian', 'assets/monster.png');
   },
 
   create: function(){
-    game.load.image('californian', 'assets/monster.png');
     game.add.sprite(0, 0, 'background');
     player = game.add.sprite(32, game.world.height - 150, 'player');
     game.physics.arcade.enable(player);
@@ -17,7 +16,7 @@ Main.prototype = {
     cursors = game.input.keyboard.createCursorKeys();
 
     enemies = game.add.group();
-    enemies.push(new EnemyCalifornian(0,game,player.x+100,player.y+100));
+    enemies.create(new EnemyCalifornian(0,game,player.x+100,player.y+100));
     
     new EnemyCalifornian(0,game,player.x+100,player.y+100);
 
@@ -46,11 +45,14 @@ Main.prototype = {
   }
 };
 
-function StartMenu(){}
+function Start(){}
 
-StartMenu.prototype = {
+Start.prototype = {
   loadScripts: function(){
     game.load.script('style', 'scripts/style.js');
+    game.load.script('monsters', 'scripts/monsters.js');
+    game.load.script('menus', 'scripts/menus.js');
+    game.load.script('gui', 'scripts/gui.js');
   },
   
   addMenuOption: function(text, callback){
@@ -81,7 +83,13 @@ StartMenu.prototype = {
     this.loadScripts();
   },
   
+  addGameStates: function(){
+    game.state.add('Main', Main);
+    game.state.add('Options', Options);
+  },
+  
   create: function(){
+    this.addGameStates();
     game.stage.disableVisibilityChange = true;
     
     // game.add.sprite(0, 0, 'menu-bg');
@@ -91,7 +99,7 @@ StartMenu.prototype = {
       game.state.start('Main');
     });
     this.addMenuOption('Options', function(){
-      // game.state.start('Main');
+      game.state.start('Options');
     });
     this.addMenuOption('Credits', function(){
       // game.state.start('Main');
@@ -103,9 +111,6 @@ StartMenu.prototype = {
 $(function(){
   window.game = new Phaser.Game(800, 600, Phaser.AUTO, 'drawArea');
    
-  game.state.add('StartMenu', StartMenu);
-  game.state.add('Main', Main);
-  game.state.start('StartMenu');
-  // game.state.start('Main');
-   
+  game.state.add('Start', Start);
+  game.state.start('Start');
 });
