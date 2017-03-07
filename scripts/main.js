@@ -1,6 +1,6 @@
-function Main(){}
+function Game(){}
 
-Main.prototype = {
+Game.prototype = {
   preload: function(){
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.load.image('background', 'assets/background.png');
@@ -84,8 +84,10 @@ Start.prototype = {
   },
   
   addGameStates: function(){
-    game.state.add('Main', Main);
+    game.state.add('Game', Game);
     game.state.add('Options', Options);
+    game.state.add('Credits', Credits);
+    game.state.add('Pause', Pause);
   },
   
   create: function(){
@@ -96,13 +98,13 @@ Start.prototype = {
     game.add.existing(this.titleText);
     
     this.addMenuOption('Start', function(){
-      game.state.start('Main');
+      game.state.start('Game');
     });
     this.addMenuOption('Options', function(){
       game.state.start('Options');
     });
     this.addMenuOption('Credits', function(){
-      // game.state.start('Main');
+      game.state.start('Credits');
     });
   }
 };
