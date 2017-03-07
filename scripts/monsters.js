@@ -1,4 +1,4 @@
-EnemyCalifornian = function(index,game,x,y) {
+var EnemyCalifornian = function(index,game,x,y) {
     
     this.californian = game.add.sprite(x,y,'californian');
     this.californian.anchor.setTo(0.5,0.5);
