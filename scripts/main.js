@@ -42,6 +42,7 @@ Game.prototype = {
 		game.load.spritesheet('player4', 'animations/player/PlayerWalkLeft.png', 32, 48);
 		game.load.image('californian', 'assets/monster.png');
 		game.load.image('sword', 'assets/sword.png');
+		game.load.image('guiBackground', 'assets/GUI.png');
 	},
 	create: function () {
 		// Enable physics
@@ -98,6 +99,10 @@ Game.prototype = {
 		game.physics.arcade.enable(invisAttack);
 		cursors = game.input.keyboard.createCursorKeys();
 		attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+		
+		// Create GUI
+		gui = new Gui();
+		gui.create();
 	},
 	update: function () {
 		game.physics.arcade.overlap(bullets, enemies, weaponHit, null, this);
@@ -142,6 +147,9 @@ Game.prototype = {
 			player.animations.stop();
 			player.frame = 4;
 		}
+		
+		// Update GUI
+		gui.update();
 	}
 };
 
