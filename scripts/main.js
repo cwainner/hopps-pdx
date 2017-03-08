@@ -23,12 +23,22 @@ Game.prototype = {
     invisAttack.scale.x = player.width+10;
     invisAttack.scale.y = player.height+10;
     invisAttack.enableBody = true;
-    weapon = game.add.weapon(1, 'sword');
+    weapon = game.add.weapon(100, 'sword');
     weapon.bulletSpeed = 100;
     weapon.fireRate = 1000;
     weapon.trackSprite(player, 0, 0, true);
-    weapon.enableBody = true;
-    game.physics.arcade.enable(weapon);
+
+    bullets = game.add.group();
+    bullets.enableBody = true;
+    bullets.physicsBodyType = Phaser.Physics.ARCADE;
+    
+    for (var i = 0; i < 2; i++) {
+      var b = bullets.create(0,0,'sword');
+      b.name = 'bullet' + i;
+      b.exists = false;
+      b.visible = false;
+    }
+    
     weapon.bulletKillType = Phaser.Weapon.KILL_DISTANCE;
     weapon.bulletKillDistance = 100;
     game.physics.arcade.enable(invisAttack);
@@ -42,10 +52,8 @@ Game.prototype = {
    },
   update: function(){
     
-          enemies.forEach(function(enemy){
-
-        game.physics.arcade.overlap(enemy, weapon.bullet, weaponHit, null, this);
-      });
+  game.physics.arcade.overlap(bullets, enemies, weaponHit, null, this);
+     
     // game.physics.arcade.collide(enemy, player);
 //    game.physics.arcade.collide(enemies, player, collisionDetection, null, this);
     player.body.velocity.x = 0;
@@ -62,7 +70,7 @@ Game.prototype = {
     //  Attacking?
     if (attackButton.isDown)
     {
-      weapon.fire();
+      fireBullet();
       if (player.facing === "left") {
         invisAttack.x = player.x-16;
         invisAttack.scale.x = 20;
@@ -171,6 +179,14 @@ Start.prototype = {
     });
   }
 };
+
+function fireBullet () {
+  bullet = bullets.getFirstExists(false);
+  if (bullet) {
+    bullet.reset(player.x, player.y);
+    bullet.body.velocity.y = 100;
+  }
+}
 
 
 $(function(){

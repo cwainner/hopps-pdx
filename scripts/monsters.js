@@ -37,7 +37,8 @@ function damageEnemy(enemy, player) {
   }
 }
 
-function weaponHit(weapon, enemy) {
-  weapon.kill();
+function weaponHit(bullet, enemy) {
+  bullet.kill();
+  enemy.kill();
   console.log("hit")
 }
