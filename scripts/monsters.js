@@ -1,9 +1,9 @@
 var Monster = function(game, monsterType){
-	
+
 	Phaser.Sprite.call(this, game, game.world.randomX, game.world.randomY, monsterType);
 	this.canAttack = true;
     this.health = 2;
-	
+
 }
 
 Monster.prototype = Object.create(Phaser.Sprite.prototype);
@@ -21,24 +21,18 @@ function createMonsters() {
 }
 
 function collisionDetection(enemy, player) {
-	
+
 	if (enemy.canAttack === true) {
 		player.health--;
-		console.log(player.health);
 		enemy.canAttack = false;
-		setTimeout(function () { console.log("monstattk set to true"); enemy.canAttack = true; }, 2000);
+		setTimeout(function () { enemy.canAttack = true; }, 2000);
 	}
 }
-
 function damageEnemy(enemy, player) {
+
+	console.log("HIT"+enemy);
   enemy.health--;
   if (enemy.health < 1) {
     enemy.kill();
   }
-}
-
-function weaponHit(bullet, enemy) {
-  bullet.kill();
-  enemy.kill();
-  console.log("hit")
 }
