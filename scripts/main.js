@@ -44,6 +44,7 @@ Game.prototype = {
 		// Create player
 		player = game.add.sprite(32, game.world.height - 150, 'player');
 		player.health = 10;
+		player.anchor.setTo(0.5,0.5);
 		game.physics.arcade.enable(player);
 		player.enableBody = true;
 		player.body.collideWorldBounds = true;
@@ -55,8 +56,9 @@ Game.prototype = {
 
 		// Create invisible sprite for Attacking
 		invisAttack = game.add.sprite(player.x, player.y, 'sword');
-		invisAttack.scale.x = player.width;
-		invisAttack.scale.y = player.height;
+		invisAttack.anchor.setTo(0.5,0.5);
+		invisAttack.scale.x = .1;
+		invisAttack.scale.y = .1;
 		invisAttack.enableBody = true;
 		game.physics.arcade.enable(invisAttack);
 
@@ -91,7 +93,8 @@ Game.prototype = {
 		gui.create();
 	},
 	update: function () {
-		// game.physics.arcade.collide(enemies, invisAttack, damageEnemy, null, this);
+		invisAttack.scale.x = .1;
+		invisAttack.scale.y = .1;
 		if(player.health <= 0){
 			game.state.start('GameOver');
 		}
@@ -114,25 +117,21 @@ Game.prototype = {
 		if (attackButton.isDown)
     {
 			if (player.facing === "left") {
-        invisAttack.x = player.x-16;
-				invisAttack.y = player.y;
-        invisAttack.scale.x = 1.1;
-        invisAttack.scale.y = 1.1;
+        invisAttack.scale.x = 1.5;
+        invisAttack.scale.y = 1.3;
+				game.physics.arcade.moveToXY(invisAttack, player.x-25, player.y, 300);
       } else if (player.facing === "right") {
-        invisAttack.x = player.x+16;
-				invisAttack.y = player.y;
-        invisAttack.scale.x = 1.1;
-        invisAttack.scale.y = 1.1;
+        invisAttack.scale.x = 1.5;
+        invisAttack.scale.y = 1.3;
+				game.physics.arcade.moveToXY(invisAttack, player.x+25, player.y, 300);
       } else if (player.facing === "up") {
-        invisAttack.y = player.y-24;
-				invisAttack.x = player.x;
-        invisAttack.scale.x = 1.1;
-        invisAttack.scale.y = 1.1;
+        invisAttack.scale.x = 1.3;
+        invisAttack.scale.y = 1.5;
+				game.physics.arcade.moveToXY(invisAttack, player.x, player.y-50, 300);
       } else if (player.facing === "down") {
-        invisAttack.y = player.y+24;
-				invisAttack.x = player.x;
-        invisAttack.scale.x = 1.1;
-        invisAttack.scale.y = 1.1;
+        invisAttack.scale.x = 1.3;
+        invisAttack.scale.y = 1.5;
+				game.physics.arcade.moveToXY(invisAttack, player.x, player.y+50, 300);
       }
       enemies.forEach(function(enemy){
         game.physics.arcade.collide(enemy, invisAttack, damageEnemy, null, this);
