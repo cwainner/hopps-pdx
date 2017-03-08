@@ -75,15 +75,19 @@ Game.prototype = {
 		map.addTilesetImage('walls_1x2');
 		map.addTilesetImage('tiles2');
 		layer = map.createLayer('Tile Layer 1');
+    enemyBounds = map.createLayer('Enemy');
+    enemyBounds.resizeWorld();
 		layer.resizeWorld();
 		map.setCollisionBetween(1, 100, true, 'Tile Layer 1');
+    map.setCollisionBetween(1, 100, true,'Enemy');
+    enemyBounds.alpha = 0;
 		game.camera.follow(player);
 		game.physics.arcade.setBoundsToWorld(true, true, true, true, false);
-
+		
 		// Create enemies
 		enemies = game.add.group();
 		createMonsters();
-
+		
 		// Create weapons and combat tracking
 		weapon = game.add.weapon(100, 'sword');
 		weapon.bulletSpeed = 100;
@@ -111,7 +115,9 @@ Game.prototype = {
 		player.body.velocity.x = 0;
 		player.body.velocity.y = 0;
 		game.physics.arcade.collide(player, layer)
-		game.physics.arcade.collide(enemies, layer)
+		game.physics.arcade.collide(enemies, enemyBounds)
+        game.physics.arcade.collide(enemies, layer)
+        
 		enemies.forEach(function (enemy) {
 			game.physics.arcade.collide(enemy, player, collisionDetection, null, this);
 			enemy.body.velocity.x = 0;
