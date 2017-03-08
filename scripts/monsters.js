@@ -1,9 +1,9 @@
 var Monster = function(game, monsterType){
-	
+
 	Phaser.Sprite.call(this, game, game.world.randomX, game.world.randomY, monsterType);
 	this.canAttack = true;
     this.health = 2;
-	
+
 }
 
 Monster.prototype = Object.create(Phaser.Sprite.prototype);
@@ -21,7 +21,7 @@ function createMonsters() {
 }
 
 function collisionDetection(enemy, player) {
-	
+
 	if (enemy.canAttack === true) {
 		player.health--;
 		console.log(player.health);
