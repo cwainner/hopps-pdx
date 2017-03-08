@@ -22,21 +22,6 @@ Game.prototype = {
 		player.animations.stop();
 		player.animations.play('walkRight', 8, true);
 	},
-	fireBullet: function() {
-		bullet = weapon.bullets.getFirstExists(false);
-		if (bullet) {
-			bullet.reset(player.x, player.y);
-			if (player.facing === "right") {
-			bullet.body.velocity.x = 100;
-		} else if (player.facing === "left") {
-			bullet.body.velocity.x = -100;
-		} else if (player.facing === "up") {
-			bullet.body.velocity.y = -100;
-		} else if (player.facing === "down") {
-			bullet.body.velocity.y = 100;
-		}
-		}
-	},
 	preload: function () {
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 		//game.load.image('background', 'assets/background.png');
@@ -84,25 +69,12 @@ Game.prototype = {
 		createMonsters();
 
 		// Create weapons and combat tracking
-		weapon = game.add.weapon(100, 'sword');
-		weapon.bulletSpeed = 100;
-		weapon.lifespan = 100;
-		weapon.fireRate = 100;
-		weapon.bullets.bulletKillType = Phaser.Weapon.KILL_DISTANCE;
-		weapon.bullets.bulletKillDistance = 100;
-		weapon.autofire = false;
-		weapon.autoExpandBulletsGroup = true;
-		weapon.trackSprite(player, 0, 0, true);
-		game.physics.arcade.enable(weapon.bullets);
-		weapon.bullets.enableBody = true;
-		game.physics.arcade.enable(weapon);
-		weapon.enableBody = true;
+
 
 		cursors = game.input.keyboard.createCursorKeys();
 		attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 	},
 	update: function () {
-		game.physics.arcade.collide(weapon.bullets, enemies, function(bullet, enemy){bullet.kill(); enemy.kill();});
 		player.body.velocity.x = 0;
 		player.body.velocity.y = 0;
 		game.physics.arcade.collide(player, layer)
