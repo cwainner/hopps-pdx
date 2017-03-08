@@ -54,7 +54,7 @@ Game.prototype = {
 	create: function () {
 		// Enable physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		
+
 		// Create player
 		player = game.add.sprite(32, game.world.height - 150, 'player');
 		player.health = 10;
@@ -66,7 +66,7 @@ Game.prototype = {
 		player.animations.add('walkUp', [0, 1, 2, 3]);
 		player.animations.add('walkLeft', [0, 1, 2, 3]);
 		player.frame = 0;
-		
+
 		// Create map
 		game.stage.backgroundColor = '#2d2d2d';
 		map = game.add.tilemap('map');
@@ -78,16 +78,12 @@ Game.prototype = {
 		map.setCollisionBetween(1, 100, true, 'Tile Layer 1');
 		game.camera.follow(player);
 		game.physics.arcade.setBoundsToWorld(true, true, true, true, false);
-		
+
 		// Create enemies
 		enemies = game.add.group();
 		createMonsters();
-		
+
 		// Create weapons and combat tracking
-		invisAttack = game.add.sprite(player.x, player.y);
-		invisAttack.scale.x = player.width + 10;
-		invisAttack.scale.y = player.height + 10;
-		invisAttack.enableBody = true;
 		weapon = game.add.weapon(100, 'sword');
 		weapon.bulletSpeed = 100;
 		weapon.fireRate = 100;
@@ -105,7 +101,6 @@ Game.prototype = {
 			b.visible = false;
 		}
 
-		game.physics.arcade.enable(invisAttack);
 		cursors = game.input.keyboard.createCursorKeys();
 		attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 	},
