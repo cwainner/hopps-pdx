@@ -14,10 +14,6 @@ Options.prototype = {
     this.optionCount++;
   },
   
-  preload: function(){
-    
-  },
-  
   create: function(){
     this.addMenuOption('<- Back', function(e){
       game.state.start('Start');
@@ -28,11 +24,6 @@ Options.prototype = {
 function Credits(){}
 
 Credits.prototype = {
-  preload: function(){
-    this.optionCount = 1;
-    this.creditCount = 0;
-  },
-  
   addCredit: function(task, author){
     var authorStyle = {
       font: '20pt Helvetica',
@@ -73,6 +64,11 @@ Credits.prototype = {
     });
     this.optionCount++;
   },
+	
+	preload: function(){
+    this.optionCount = 1;
+    this.creditCount = 0;
+  },
   
   create: function(){
     this.addCredit('Development', 'Josh Linton, Dallas Slaughter, Clifford Grimmell, and Chris Wainner');
@@ -82,10 +78,4 @@ Credits.prototype = {
       game.state.start("Start");
     });
   }
-};
-
-function Pause(){}
-
-Pause.prototype = {
-  
 };
