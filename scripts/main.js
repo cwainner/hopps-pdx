@@ -25,7 +25,15 @@ Game.prototype = {
 		bullet = bullets.getFirstExists(false);
 		if (bullet) {
 			bullet.reset(player.x, player.y);
+			if (player.facing === "right") {
+			bullet.body.velocity.x = 100;
+		} else if (player.facing === "left") {
+			bullet.body.velocity.x = -100;
+		} else if (player.facing === "up") {
+			bullet.body.velocity.y = -100;
+		} else if (player.facing === "down") {
 			bullet.body.velocity.y = 100;
+		}
 		}
 	},
 	preload: function () {
@@ -75,19 +83,21 @@ Game.prototype = {
 		invisAttack.enableBody = true;
 		weapon = game.add.weapon(100, 'sword');
 		weapon.bulletSpeed = 100;
-		weapon.fireRate = 1000;
-		weapon.trackSprite(player, 0, 0, true);
+		weapon.fireRate = 100;
+		weapon.bulletKillType = Phaser.Weapon.KILL_DISTANCE;
+		weapon.bulletKillDistance = 10;
+		weapon.autofire = false;
+		// weapon.trackSprite(player, 0, 0, true);
 		bullets = game.add.group();
 		bullets.enableBody = true;
 		bullets.physicsBodyType = Phaser.Physics.ARCADE;
-		for (var i = 0; i < 2; i++) {
+		for (var i = 0; i < 200; i++) {
 			var b = bullets.create(0, 0, 'sword');
 			b.name = 'bullet' + i;
 			b.exists = false;
 			b.visible = false;
 		}
-		weapon.bulletKillType = Phaser.Weapon.KILL_DISTANCE;
-		weapon.bulletKillDistance = 100;
+
 		game.physics.arcade.enable(invisAttack);
 		cursors = game.input.keyboard.createCursorKeys();
 		attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
