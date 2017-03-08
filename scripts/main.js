@@ -8,6 +8,7 @@ Game.prototype = {
     game.load.image('background', 'assets/background.png');
     game.load.image('player', 'assets/player.png');
     game.load.image('californian', 'assets/monster.png');
+    game.load.image('sword', 'assets/sword.png')
   },
 
   create: function(){
@@ -17,15 +18,42 @@ Game.prototype = {
     game.physics.arcade.enable(player);
     player.enableBody = true;
     player.body.collideWorldBounds = true;
-		enemies = game.add.group();
+    enemies = game.add.group();
+    invisAttack = game.add.sprite(player.x, player.y);
+    invisAttack.scale.x = player.width+10;
+    invisAttack.scale.y = player.height+10;
+    invisAttack.enableBody = true;
+    weapon = game.add.weapon(100, 'sword');
+    weapon.bulletSpeed = 100;
+    weapon.fireRate = 1000;
+    weapon.trackSprite(player, 0, 0, true);
+
+    bullets = game.add.group();
+    bullets.enableBody = true;
+    bullets.physicsBodyType = Phaser.Physics.ARCADE;
     
+    for (var i = 0; i < 2; i++) {
+      var b = bullets.create(0,0,'sword');
+      b.name = 'bullet' + i;
+      b.exists = false;
+      b.visible = false;
+    }
+    
+    weapon.bulletKillType = Phaser.Weapon.KILL_DISTANCE;
+    weapon.bulletKillDistance = 100;
+    game.physics.arcade.enable(invisAttack);
     cursors = game.input.keyboard.createCursorKeys();
+    attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
 
     createMonsters();
 
 
    },
   update: function(){
+    
+  game.physics.arcade.overlap(bullets, enemies, weaponHit, null, this);
+     
     // game.physics.arcade.collide(enemy, player);
 //    game.physics.arcade.collide(enemies, player, collisionDetection, null, this);
     player.body.velocity.x = 0;
@@ -36,13 +64,40 @@ Game.prototype = {
 			enemy.body.velocity.y = 0;
 			game.physics.arcade.moveToObject(enemy, player, 30);
 		})
+        game.physics.arcade.moveToObject(invisAttack, player, 1000)
 //    enemy.body.velocity.x = 0.1;
 //    enemy.body.velocity.y = 0.1;
-    
+    //  Attacking?
+    if (attackButton.isDown)
+    {
+      fireBullet();
+      if (player.facing === "left") {
+        invisAttack.x = player.x-16;
+        invisAttack.scale.x = 20;
+        invisAttack.scale.y = player.height;
+      } else if (player.facing === "right") {
+        invisAttack.x = player.x+16;
+        invisAttack.scale.x = 20;
+        invisAttack.scale.y = player.height;
+      } else if (player.facing === "up") {
+        invisAttack.y = player.y-23;
+        invisAttack.scale.x = player.width;
+        invisAttack.scale.y = 20;
+      } else if (player.facing === "down") {
+        invisAttack.y = player.y+23;
+        invisAttack.scale.x = player.width;
+        invisAttack.scale.y = 20;
+      }
+      enemies.forEach(function(enemy){
+        game.physics.arcade.collide(enemy, invisAttack, damageEnemy, null, this);
+      });
+    }
     if(cursors.left.isDown){
       player.body.velocity.x = -100;
+      player.facing = "left";
     } else if(cursors.right.isDown){
       player.body.velocity.x = 100;
+      player.facing = "right";
     } else{
       player.animations.stop();
       player.frame = 4;
@@ -50,8 +105,10 @@ Game.prototype = {
     
     if(cursors.up.isDown){
       player.body.velocity.y = -100;
+      player.facing = "up";
     } else if(cursors.down.isDown){
       player.body.velocity.y = 100;
+      player.facing = "down";
     } else{
       player.animations.stop();
       player.frame = 4;
@@ -122,6 +179,14 @@ Start.prototype = {
     });
   }
 };
+
+function fireBullet () {
+  bullet = bullets.getFirstExists(false);
+  if (bullet) {
+    bullet.reset(player.x, player.y);
+    bullet.body.velocity.y = 100;
+  }
+}
 
 
 $(function(){
