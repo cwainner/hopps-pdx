@@ -8,6 +8,7 @@ Game.prototype = {
     game.load.image('background', 'assets/background.png');
     game.load.image('player', 'assets/player.png');
     game.load.image('californian', 'assets/monster.png');
+    game.load.image('sword', 'assets/sword.png')
   },
 
   create: function(){
@@ -22,6 +23,14 @@ Game.prototype = {
     invisAttack.scale.x = player.width+10;
     invisAttack.scale.y = player.height+10;
     invisAttack.enableBody = true;
+    weapon = game.add.weapon(1, 'sword');
+    weapon.bulletSpeed = 100;
+    weapon.fireRate = 1000;
+    weapon.trackSprite(player, 0, 0, true);
+    weapon.enableBody = true;
+    game.physics.arcade.enable(weapon);
+    weapon.bulletKillType = Phaser.Weapon.KILL_DISTANCE;
+    weapon.bulletKillDistance = 100;
     game.physics.arcade.enable(invisAttack);
     cursors = game.input.keyboard.createCursorKeys();
     attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -32,6 +41,11 @@ Game.prototype = {
 
    },
   update: function(){
+    
+          enemies.forEach(function(enemy){
+
+        game.physics.arcade.overlap(enemy, weapon.bullet, weaponHit, null, this);
+      });
     // game.physics.arcade.collide(enemy, player);
 //    game.physics.arcade.collide(enemies, player, collisionDetection, null, this);
     player.body.velocity.x = 0;
@@ -48,6 +62,7 @@ Game.prototype = {
     //  Attacking?
     if (attackButton.isDown)
     {
+      weapon.fire();
       if (player.facing === "left") {
         invisAttack.x = player.x-16;
         invisAttack.scale.x = 20;

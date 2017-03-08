@@ -21,7 +21,7 @@ function createMonsters() {
 }
 
 function collisionDetection(enemy, player) {
-	console.log("testing " + enemy + " " + enemy.canAttack);
+	
 	if (enemy.canAttack === true) {
 		player.health--;
 		console.log(player.health);
@@ -31,10 +31,13 @@ function collisionDetection(enemy, player) {
 }
 
 function damageEnemy(enemy, player) {
-  console.log("hit the invisAttack")
   enemy.health--;
-  console.log(enemy.health)
   if (enemy.health < 1) {
     enemy.kill();
   }
+}
+
+function weaponHit(weapon, enemy) {
+  weapon.kill();
+  console.log("hit")
 }
