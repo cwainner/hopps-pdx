@@ -35,6 +35,7 @@ Game.prototype = {
 		game.load.spritesheet('player4', 'animations/player/PlayerWalkLeft.png', 32, 48);
 		game.load.image('californian', 'assets/monster.png');
 		game.load.image('sword', 'assets/sword.png');
+		game.load.image('guiBackground', 'assets/GUI.png');
 	},
 	create: function () {
 		// Enable physics
@@ -59,26 +60,40 @@ Game.prototype = {
 		map.addTilesetImage('walls_1x2');
 		map.addTilesetImage('tiles2');
 		layer = map.createLayer('Tile Layer 1');
+    enemyBounds = map.createLayer('Enemy');
+    enemyBounds.resizeWorld();
 		layer.resizeWorld();
 		map.setCollisionBetween(1, 100, true, 'Tile Layer 1');
+    map.setCollisionBetween(1, 100, true,'Enemy');
+    enemyBounds.alpha = 0;
 		game.camera.follow(player);
 		game.physics.arcade.setBoundsToWorld(true, true, true, true, false);
-
+		
 		// Create enemies
 		enemies = game.add.group();
 		createMonsters();
-
+		
 		// Create weapons and combat tracking
 
 
 		cursors = game.input.keyboard.createCursorKeys();
 		attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+		
+		// Create GUI
+		gui = new Gui();
+		gui.create();
 	},
 	update: function () {
+		if(player.health <= 0){
+			game.state.start('GameOver');
+		}
+
 		player.body.velocity.x = 0;
 		player.body.velocity.y = 0;
 		game.physics.arcade.collide(player, layer)
-		game.physics.arcade.collide(enemies, layer)
+		game.physics.arcade.collide(enemies, enemyBounds)
+        game.physics.arcade.collide(enemies, layer)
+        
 		enemies.forEach(function (enemy) {
 			game.physics.arcade.collide(enemy, player, collisionDetection, null, this);
 			enemy.body.velocity.x = 0;
@@ -114,6 +129,9 @@ Game.prototype = {
 			player.animations.stop();
 			player.frame = 4;
 		}
+		
+		// Update GUI
+		gui.update();
 	}
 };
 
@@ -140,7 +158,7 @@ Start.prototype = {
 		this.optionCount++;
 	},
 	init: function () {
-		this.titleText = game.make.text(game.world.centerX, 100, "Hopps-PDX", {
+		this.titleText = game.make.text(game.world.centerX, 100, "Hopps' Adventure", {
 			font: "bold 60pt Arial",
 			fill: "white",
 			align: "center"
@@ -151,7 +169,7 @@ Start.prototype = {
 	},
 	addGameStates: function () {
 		game.state.add('Game', Game);
-		game.state.add('Options', Options);
+		game.state.add('GameOver', GameOver);
 		game.state.add('Credits', Credits);
 	},
 	preload: function () {
@@ -164,9 +182,6 @@ Start.prototype = {
 		game.add.existing(this.titleText);
 		this.addMenuOption('Start', function () {
 			game.state.start('Game');
-		});
-		this.addMenuOption('Options', function () {
-			game.state.start('Options');
 		});
 		this.addMenuOption('Credits', function () {
 			game.state.start('Credits');

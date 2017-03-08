@@ -24,9 +24,8 @@ function collisionDetection(enemy, player) {
 
 	if (enemy.canAttack === true) {
 		player.health--;
-		console.log(player.health);
 		enemy.canAttack = false;
-		setTimeout(function () { console.log("monstattk set to true"); enemy.canAttack = true; }, 2000);
+		setTimeout(function () { enemy.canAttack = true; }, 2000);
 	}
 }
 
