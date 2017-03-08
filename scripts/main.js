@@ -23,10 +23,18 @@ Game.prototype = {
 		player.animations.play('walkRight', 8, true);
 	},
 	fireBullet: function() {
-		bullet = bullets.getFirstExists(false);
+		bullet = weapon.bullets.getFirstExists(false);
 		if (bullet) {
 			bullet.reset(player.x, player.y);
+			if (player.facing === "right") {
+			bullet.body.velocity.x = 100;
+		} else if (player.facing === "left") {
+			bullet.body.velocity.x = -100;
+		} else if (player.facing === "up") {
+			bullet.body.velocity.y = -100;
+		} else if (player.facing === "down") {
 			bullet.body.velocity.y = 100;
+		}
 		}
 	},
 	preload: function () {
@@ -47,7 +55,7 @@ Game.prototype = {
 	create: function () {
 		// Enable physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		
+
 		// Create player
 		player = game.add.sprite(32, game.world.height - 150, 'player');
 		player.health = 10;
@@ -59,7 +67,7 @@ Game.prototype = {
 		player.animations.add('walkUp', [0, 1, 2, 3]);
 		player.animations.add('walkLeft', [0, 1, 2, 3]);
 		player.frame = 0;
-		
+
 		// Create map
 		game.stage.backgroundColor = '#2d2d2d';
 		map = game.add.tilemap('map');
@@ -67,8 +75,12 @@ Game.prototype = {
 		map.addTilesetImage('walls_1x2');
 		map.addTilesetImage('tiles2');
 		layer = map.createLayer('Tile Layer 1');
+    enemyBounds = map.createLayer('Enemy');
+    enemyBounds.resizeWorld();
 		layer.resizeWorld();
 		map.setCollisionBetween(1, 100, true, 'Tile Layer 1');
+    map.setCollisionBetween(1, 100, true,'Enemy');
+    enemyBounds.alpha = 0;
 		game.camera.follow(player);
 		game.physics.arcade.setBoundsToWorld(true, true, true, true, false);
 		
@@ -77,26 +89,20 @@ Game.prototype = {
 		createMonsters();
 		
 		// Create weapons and combat tracking
-		invisAttack = game.add.sprite(player.x, player.y);
-		invisAttack.scale.x = player.width + 10;
-		invisAttack.scale.y = player.height + 10;
-		invisAttack.enableBody = true;
 		weapon = game.add.weapon(100, 'sword');
 		weapon.bulletSpeed = 100;
-		weapon.fireRate = 1000;
+		weapon.lifespan = 100;
+		weapon.fireRate = 100;
+		weapon.bullets.bulletKillType = Phaser.Weapon.KILL_DISTANCE;
+		weapon.bullets.bulletKillDistance = 100;
+		weapon.autofire = false;
+		weapon.autoExpandBulletsGroup = true;
 		weapon.trackSprite(player, 0, 0, true);
-		bullets = game.add.group();
-		bullets.enableBody = true;
-		bullets.physicsBodyType = Phaser.Physics.ARCADE;
-		for (var i = 0; i < 2; i++) {
-			var b = bullets.create(0, 0, 'sword');
-			b.name = 'bullet' + i;
-			b.exists = false;
-			b.visible = false;
-		}
-		weapon.bulletKillType = Phaser.Weapon.KILL_DISTANCE;
-		weapon.bulletKillDistance = 100;
-		game.physics.arcade.enable(invisAttack);
+		game.physics.arcade.enable(weapon.bullets);
+		weapon.bullets.enableBody = true;
+		game.physics.arcade.enable(weapon);
+		weapon.enableBody = true;
+
 		cursors = game.input.keyboard.createCursorKeys();
 		attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		
@@ -105,13 +111,13 @@ Game.prototype = {
 		gui.create();
 	},
 	update: function () {
-		game.physics.arcade.overlap(bullets, enemies, weaponHit, null, this);
-		// game.physics.arcade.collide(enemy, player);
-		//    game.physics.arcade.collide(enemies, player, collisionDetection, null, this);
+		game.physics.arcade.collide(weapon.bullets, enemies, function(bullet, enemy){bullet.kill(); enemy.kill();});
 		player.body.velocity.x = 0;
 		player.body.velocity.y = 0;
 		game.physics.arcade.collide(player, layer)
-		game.physics.arcade.collide(enemies, layer)
+		game.physics.arcade.collide(enemies, enemyBounds)
+        game.physics.arcade.collide(enemies, layer)
+        
 		enemies.forEach(function (enemy) {
 			game.physics.arcade.collide(enemy, player, collisionDetection, null, this);
 			enemy.body.velocity.x = 0;
