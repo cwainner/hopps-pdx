@@ -198,6 +198,7 @@ Start.prototype = {
 		game.state.add('Game', Game);
 		game.state.add('GameOver', GameOver);
 		game.state.add('Credits', Credits);
+		game.state.add('GameWin', GameWin);
 	},
 	preload: function () {
 		this.loadScripts();
