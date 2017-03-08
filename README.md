@@ -1,4 +1,4 @@
-# _Hopps-PDX_
+# _Hopps' Adventure_
 
 ### _A Zelda-style game about a man named Hopps, who has many misadventures in Portland._
 _Feb. 28, 2017_
@@ -9,13 +9,21 @@ Link to Github: <https://github.com/cwainner/hopps-pdx>
 
 ## Description
 
-_Placeholder_
+_It was an ordinaory day in Portland for Hopps, until the baristas attacked! Now he must escape the underground and defeat any who get in his way._
 
 ### Specs
 
 | Behavior | Input Example | Output Example |
 |----------|:-------------:|:--------------:|
-| Placeholder | Placeholder | Placeholder |
+| Load title screen | N/A | 'Hopp's Adventure' loads to canvas |
+| Load 'Start game' and 'Credits' options | N/A | Menu options are loaded to canvas |
+| Start game | player selects 'Start game' | Loads the game |
+| Moves character based on input | ['up arrow', 'down arrow', 'left arrow' 'right arrow'] | [sprite move up, sprite moves down, sprite moves left, sprite moves right] |
+| character attacks on input | ['space button'] | sprite attacks |
+| Loads monsters | N/A | monsters are loaded to the canvas |
+| Monsters take damage from player attacks | player attacks | Monster is killed |
+| Player takes damage from monsters | player collides with a monster | player character takes damage |
+| Player dies if the character's health reaches 0 | health = 0 | Displays Game Over Screen |
 
 ## Setup/Installation Requirements
 
