@@ -1,6 +1,6 @@
-function Options(){}
+function GameOver(){}
 
-Options.prototype = {
+GameOver.prototype = {
   addMenuOption: function(text, callback){
     var txt = game.add.text(30, (this.optionCount*80) + 200, text, style.navitem.default);
     txt.inputEnabled = true;
@@ -13,10 +13,25 @@ Options.prototype = {
     });
     this.optionCount++;
   },
+	
+	init: function(){
+		this.gameOverText = game.make.text(game.camera.x, 100, "Game Over", {
+			font: "bold 60pt Arial",
+			fill: "white",
+			align: "center"
+		});
+		this.gameOverText.setShadow(3, 3, 'rgba(0, 0, 0, 0.5)', 5);
+//		this.gameOverText.anchor.set(0.5);
+	},
   
   create: function(){
-    this.addMenuOption('<- Back', function(e){
-      game.state.start('Start');
+		this.optionCount = 0;
+		game.add.existing(this.gameOverText);
+    this.addMenuOption('Main Menu', function(e){
+      location.reload();
+    });
+		this.addMenuOption('Start Over', function(e){
+      game.state.start('Game');
     });
   }
 };

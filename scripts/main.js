@@ -111,6 +111,9 @@ Game.prototype = {
 		gui.create();
 	},
 	update: function () {
+		if(player.health <= 0){
+			game.state.start('GameOver');
+		}
 		game.physics.arcade.collide(weapon.bullets, enemies, function(bullet, enemy){bullet.kill(); enemy.kill();});
 		player.body.velocity.x = 0;
 		player.body.velocity.y = 0;
@@ -182,7 +185,7 @@ Start.prototype = {
 		this.optionCount++;
 	},
 	init: function () {
-		this.titleText = game.make.text(game.world.centerX, 100, "Hopps-PDX", {
+		this.titleText = game.make.text(game.world.centerX, 100, "Hopps' Adventure", {
 			font: "bold 60pt Arial",
 			fill: "white",
 			align: "center"
@@ -193,7 +196,7 @@ Start.prototype = {
 	},
 	addGameStates: function () {
 		game.state.add('Game', Game);
-		game.state.add('Options', Options);
+		game.state.add('GameOver', GameOver);
 		game.state.add('Credits', Credits);
 	},
 	preload: function () {
@@ -206,9 +209,6 @@ Start.prototype = {
 		game.add.existing(this.titleText);
 		this.addMenuOption('Start', function () {
 			game.state.start('Game');
-		});
-		this.addMenuOption('Options', function () {
-			game.state.start('Options');
 		});
 		this.addMenuOption('Credits', function () {
 			game.state.start('Credits');
