@@ -16,7 +16,8 @@ Game.prototype = {
 		player.loadTexture('player4', 0);
 		player.animations.stop();
 		player.animations.play('walkLeft', 8, true);
-	},walkRight: function () {
+	},
+	walkRight: function () {
 		player.loadTexture('player3', 0);
 		player.animations.stop();
 		player.animations.play('walkRight', 8, true);
@@ -40,16 +41,25 @@ Game.prototype = {
 		game.load.spritesheet('player3', 'animations/player/PlayerWalkRight.png', 32, 48);
 		game.load.spritesheet('player4', 'animations/player/PlayerWalkLeft.png', 32, 48);
 		game.load.image('californian', 'assets/monster.png');
-		game.load.image('sword', 'assets/sword.png')
+		game.load.image('sword', 'assets/sword.png');
 	},
 	create: function () {
+		// Enable physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		//  game.add.sprite(0, 0, 'background');
+		
+		// Create player
 		player = game.add.sprite(32, game.world.height - 150, 'player');
 		player.health = 10;
 		game.physics.arcade.enable(player);
 		player.enableBody = true;
 		player.body.collideWorldBounds = true;
+		player.animations.add('walkRight', [0, 1, 2, 3]);
+		player.animations.add('walkDown', [0, 1, 2, 3]);
+		player.animations.add('walkUp', [0, 1, 2, 3]);
+		player.animations.add('walkLeft', [0, 1, 2, 3]);
+		player.frame = 0;
+		
+		// Create map
 		game.stage.backgroundColor = '#2d2d2d';
 		map = game.add.tilemap('map');
 		map.addTilesetImage('ground_1x1');
@@ -58,17 +68,14 @@ Game.prototype = {
 		layer = map.createLayer('Tile Layer 1');
 		layer.resizeWorld();
 		map.setCollisionBetween(1, 100, true, 'Tile Layer 1');
-		player = game.add.sprite(32, game.world.height - 150, 'player');
-		player.health = 10;
-		game.physics.arcade.enable(player);
 		game.camera.follow(player);
 		game.physics.arcade.setBoundsToWorld(true, true, true, true, false);
-		player.enableBody = true;
-		player.animations.add('walkRight', [0, 1, 2, 3]);
-		player.animations.add('walkDown', [0, 1, 2, 3]);
-		player.animations.add('walkUp', [0, 1, 2, 3]);
-		player.animations.add('walkLeft', [0, 1, 2, 3]);
+		
+		// Create enemies
 		enemies = game.add.group();
+		createMonsters();
+		
+		// Create weapons and combat tracking
 		invisAttack = game.add.sprite(player.x, player.y);
 		invisAttack.scale.x = player.width + 10;
 		invisAttack.scale.y = player.height + 10;
@@ -91,7 +98,6 @@ Game.prototype = {
 		game.physics.arcade.enable(invisAttack);
 		cursors = game.input.keyboard.createCursorKeys();
 		attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-		createMonsters();
 	},
 	update: function () {
 		game.physics.arcade.overlap(bullets, enemies, weaponHit, null, this);
@@ -162,10 +168,10 @@ Start.prototype = {
 		this.optionCount++;
 	},
 	init: function () {
-		this.titleText = game.make.text(game.world.centerX, 100, "Game Title", {
-			font: "bold 60pt Arial"
-			, fill: "white"
-			, align: "center"
+		this.titleText = game.make.text(game.world.centerX, 100, "Hopps-PDX", {
+			font: "bold 60pt Arial",
+			fill: "white",
+			align: "center"
 		});
 		this.titleText.setShadow(3, 3, 'rgba(0, 0, 0, 0.5)', 5);
 		this.titleText.anchor.set(0.5);
