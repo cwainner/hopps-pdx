@@ -21,7 +21,7 @@ Game.prototype = {
 		player.animations.stop();
 		player.animations.play('walkRight', 8, true);
 	},
-	function fireBullet() {
+	fireBullet: function() {
 		bullet = bullets.getFirstExists(false);
 		if (bullet) {
 			bullet.reset(player.x, player.y);
@@ -107,36 +107,11 @@ Game.prototype = {
 			enemy.body.velocity.y = 0;
 			game.physics.arcade.moveToObject(enemy, player, 30);
 		})
-		game.physics.arcade.moveToObject(invisAttack, player, 1000)
-			//    enemy.body.velocity.x = 0.1;
-			//    enemy.body.velocity.y = 0.1;
-			//  Attacking?
-		if (attackButton.isDown) {
-			fireBullet();
-			if (player.facing === "left") {
-				invisAttack.x = player.x - 16;
-				invisAttack.scale.x = 20;
-				invisAttack.scale.y = player.height;
-			}
-			else if (player.facing === "right") {
-				invisAttack.x = player.x + 16;
-				invisAttack.scale.x = 20;
-				invisAttack.scale.y = player.height;
-			}
-			else if (player.facing === "up") {
-				invisAttack.y = player.y - 23;
-				invisAttack.scale.x = player.width;
-				invisAttack.scale.y = 20;
-			}
-			else if (player.facing === "down") {
-				invisAttack.y = player.y + 23;
-				invisAttack.scale.x = player.width;
-				invisAttack.scale.y = 20;
-			}
-			enemies.forEach(function (enemy) {
-				game.physics.arcade.collide(enemy, invisAttack, damageEnemy, null, this);
-			});
-		}
+		//  Attacking?
+		if (attackButton.isDown)
+    {
+      this.fireBullet();
+    }
 		if (cursors.left.isDown && cursors.right.isDown === false && cursors.up.isDown === false && cursors.down.isDown === false) {
 			cursors.left.onDown.addOnce(this.walkLeft, this);
 			player.body.velocity.x = -100;
