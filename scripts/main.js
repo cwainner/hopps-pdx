@@ -38,7 +38,11 @@ Game.prototype = {
 		})
 //    enemy.body.velocity.x = 0.1;
 //    enemy.body.velocity.y = 0.1;
-    
+    //  Firing?
+    if (attackButton.isDown)
+    {
+        console.log("asdf");
+    }
     if(cursors.left.isDown){
       player.body.velocity.x = -100;
     } else if(cursors.right.isDown){
@@ -106,6 +110,7 @@ Start.prototype = {
   
   create: function(){
     this.addGameStates();
+    attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     game.stage.disableVisibilityChange = true;
     
     // game.add.sprite(0, 0, 'menu-bg');
