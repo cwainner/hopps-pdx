@@ -17,9 +17,15 @@ Game.prototype = {
     game.physics.arcade.enable(player);
     player.enableBody = true;
     player.body.collideWorldBounds = true;
-		enemies = game.add.group();
-    
+    enemies = game.add.group();
+    invisAttack = game.add.sprite(player.x, player.y);
+    invisAttack.scale.x = player.width+10;
+    invisAttack.scale.y = player.height+10;
+    invisAttack.enableBody = true;
+    game.physics.arcade.enable(invisAttack);
     cursors = game.input.keyboard.createCursorKeys();
+    attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
 
     createMonsters();
 
@@ -36,17 +42,39 @@ Game.prototype = {
 			enemy.body.velocity.y = 0;
 			game.physics.arcade.moveToObject(enemy, player, 30);
 		})
+        game.physics.arcade.moveToObject(invisAttack, player, 1000)
 //    enemy.body.velocity.x = 0.1;
 //    enemy.body.velocity.y = 0.1;
-    //  Firing?
+    //  Attacking?
     if (attackButton.isDown)
     {
-        console.log("asdf");
+      if (player.facing === "left") {
+        invisAttack.x = player.x-16;
+        invisAttack.scale.x = 20;
+        invisAttack.scale.y = player.height;
+      } else if (player.facing === "right") {
+        invisAttack.x = player.x+16;
+        invisAttack.scale.x = 20;
+        invisAttack.scale.y = player.height;
+      } else if (player.facing === "up") {
+        invisAttack.y = player.y-23;
+        invisAttack.scale.x = player.width;
+        invisAttack.scale.y = 20;
+      } else if (player.facing === "down") {
+        invisAttack.y = player.y+23;
+        invisAttack.scale.x = player.width;
+        invisAttack.scale.y = 20;
+      }
+      enemies.forEach(function(enemy){
+        game.physics.arcade.collide(enemy, invisAttack, damageEnemy, null, this);
+      });
     }
     if(cursors.left.isDown){
       player.body.velocity.x = -100;
+      player.facing = "left";
     } else if(cursors.right.isDown){
       player.body.velocity.x = 100;
+      player.facing = "right";
     } else{
       player.animations.stop();
       player.frame = 4;
@@ -54,8 +82,10 @@ Game.prototype = {
     
     if(cursors.up.isDown){
       player.body.velocity.y = -100;
+      player.facing = "up";
     } else if(cursors.down.isDown){
       player.body.velocity.y = 100;
+      player.facing = "down";
     } else{
       player.animations.stop();
       player.frame = 4;
@@ -110,7 +140,6 @@ Start.prototype = {
   
   create: function(){
     this.addGameStates();
-    attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     game.stage.disableVisibilityChange = true;
     
     // game.add.sprite(0, 0, 'menu-bg');
