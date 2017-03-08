@@ -92,7 +92,7 @@ Game.prototype = {
 		player.body.velocity.y = 0;
 		game.physics.arcade.collide(player, layer)
 		game.physics.arcade.collide(enemies, enemyBounds)
-        game.physics.arcade.collide(enemies, layer)
+    game.physics.arcade.collide(enemies, layer)
         
 		enemies.forEach(function (enemy) {
 			game.physics.arcade.collide(enemy, player, collisionDetection, null, this);
