@@ -28,8 +28,9 @@ function collisionDetection(enemy, player) {
 		setTimeout(function () { enemy.canAttack = true; }, 2000);
 	}
 }
-
 function damageEnemy(enemy, player) {
+
+	console.log("HIT"+enemy);
   enemy.health--;
   if (enemy.health < 1) {
     enemy.kill();

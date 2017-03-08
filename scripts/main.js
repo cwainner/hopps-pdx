@@ -44,6 +44,7 @@ Game.prototype = {
 		// Create player
 		player = game.add.sprite(32, game.world.height - 150, 'player');
 		player.health = 10;
+		player.anchor.setTo(0.5,0.5);
 		game.physics.arcade.enable(player);
 		player.enableBody = true;
 		player.body.collideWorldBounds = true;
@@ -52,6 +53,14 @@ Game.prototype = {
 		player.animations.add('walkUp', [0, 1, 2, 3]);
 		player.animations.add('walkLeft', [0, 1, 2, 3]);
 		player.frame = 0;
+
+		// Create invisible sprite for Attacking
+		invisAttack = game.add.sprite(player.x, player.y, 'sword');
+		invisAttack.anchor.setTo(0.5,0.5);
+		invisAttack.scale.x = .1;
+		invisAttack.scale.y = .1;
+		invisAttack.enableBody = true;
+		game.physics.arcade.enable(invisAttack);
 
 		// Create map
 		game.stage.backgroundColor = '#2d2d2d';
@@ -68,22 +77,24 @@ Game.prototype = {
     enemyBounds.alpha = 0;
 		game.camera.follow(player);
 		game.physics.arcade.setBoundsToWorld(true, true, true, true, false);
-		
+
 		// Create enemies
 		enemies = game.add.group();
 		createMonsters();
-		
-		// Create weapons and combat tracking
+
+
 
 
 		cursors = game.input.keyboard.createCursorKeys();
 		attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-		
+
 		// Create GUI
 		gui = new Gui();
 		gui.create();
 	},
 	update: function () {
+		invisAttack.scale.x = .1;
+		invisAttack.scale.y = .1;
 		if(player.health <= 0){
 			game.state.start('GameOver');
 		}
@@ -93,17 +104,38 @@ Game.prototype = {
 		game.physics.arcade.collide(player, layer)
 		game.physics.arcade.collide(enemies, enemyBounds)
     game.physics.arcade.collide(enemies, layer)
-        
+		game.physics.arcade.collide(invisAttack, layer)
+
 		enemies.forEach(function (enemy) {
 			game.physics.arcade.collide(enemy, player, collisionDetection, null, this);
 			enemy.body.velocity.x = 0;
 			enemy.body.velocity.y = 0;
 			game.physics.arcade.moveToObject(enemy, player, 30);
+			game.physics.arcade.moveToObject(invisAttack, player, 100);
 		})
 		//  Attacking?
 		if (attackButton.isDown)
     {
-      this.fireBullet();
+			if (player.facing === "left") {
+        invisAttack.scale.x = 1.5;
+        invisAttack.scale.y = 1.3;
+				game.physics.arcade.moveToXY(invisAttack, player.x-25, player.y, 300);
+      } else if (player.facing === "right") {
+        invisAttack.scale.x = 1.5;
+        invisAttack.scale.y = 1.3;
+				game.physics.arcade.moveToXY(invisAttack, player.x+25, player.y, 300);
+      } else if (player.facing === "up") {
+        invisAttack.scale.x = 1.3;
+        invisAttack.scale.y = 1.5;
+				game.physics.arcade.moveToXY(invisAttack, player.x, player.y-50, 300);
+      } else if (player.facing === "down") {
+        invisAttack.scale.x = 1.3;
+        invisAttack.scale.y = 1.5;
+				game.physics.arcade.moveToXY(invisAttack, player.x, player.y+50, 300);
+      }
+      enemies.forEach(function(enemy){
+        game.physics.arcade.collide(enemy, invisAttack, damageEnemy, null, this);
+      });
     }
 		if (cursors.left.isDown && cursors.right.isDown === false && cursors.up.isDown === false && cursors.down.isDown === false) {
 			cursors.left.onDown.addOnce(this.walkLeft, this);
@@ -129,7 +161,7 @@ Game.prototype = {
 			player.animations.stop();
 			player.frame = 4;
 		}
-		
+
 		// Update GUI
 		gui.update();
 	}
