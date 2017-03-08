@@ -32,27 +32,23 @@ Game.prototype = {
     map.addTilesetImage('walls_1x2');
     map.addTilesetImage('tiles2');
     layer = map.createLayer('Tile Layer 1');
-    
+
     layer.resizeWorld();
     map.setCollisionBetween(1, 100, true, 'Tile Layer 1');
     player = game.add.sprite(32, game.world.height - 150, 'player');
     player.health = 10;
     game.physics.arcade.enable(player);
-    
+
     game.camera.follow(player);
     game.physics.arcade.setBoundsToWorld(true, true, true, true, false);
     player.enableBody = true;
-    
+
     player.animations.add('walkRight', [0,1,2,3]);
     player.animations.add('walkDown', [0,1,2,3]);
     player.animations.add('walkUp', [0,1,2,3]);
     player.animations.add('walkLeft', [0,1,2,3]);
-    
+
     enemies = game.add.group();
-    invisAttack = game.add.sprite(player.x, player.y);
-    invisAttack.scale.x = player.width+10;
-    invisAttack.scale.y = player.height+10;
-    invisAttack.enableBody = true;
     weapon = game.add.weapon(100, 'sword');
     weapon.bulletSpeed = 100;
     weapon.fireRate = 1000;
@@ -82,40 +78,36 @@ Game.prototype = {
    },
   walkDown: function () {
  		player.loadTexture('player', 0);
- 		
+
  		player.animations.stop();
  		player.animations.play('walkDown', 8, true);
 
  	},
   walkUp: function () {
  		player.loadTexture('player2', 0);
- 		
+
  		player.animations.stop();
  		player.animations.play('walkUp', 8, true);
- 
+
  	},
  	walkLeft: function () {
  		player.loadTexture('player4', 0);
- 		
+
  		player.animations.stop();
  		player.animations.play('walkLeft', 8, true);
- 
+
  	},
  	walkRight: function () {
  		player.loadTexture('player3', 0);
  		player.animations.stop();
     player.animations.play('walkRight', 8, true);
-    
+
  	},
- 
-   
+
+
   update: function(){
 
   game.physics.arcade.overlap(bullets, enemies, weaponHit, null, this);
-
-
-    // game.physics.arcade.collide(enemy, player);
-//    game.physics.arcade.collide(enemies, player, collisionDetection, null, this);
     player.body.velocity.x = 0;
     player.body.velocity.y = 0;
     game.physics.arcade.collide(player, layer)
@@ -126,62 +118,40 @@ Game.prototype = {
 			enemy.body.velocity.y = 0;
 			game.physics.arcade.moveToObject(enemy, player, 30);
 		})
-        game.physics.arcade.moveToObject(invisAttack, player, 1000)
-//    enemy.body.velocity.x = 0.1;
-//    enemy.body.velocity.y = 0.1;
+
     //  Attacking?
     if (attackButton.isDown)
     {
       fireBullet();
-      if (player.facing === "left") {
-        invisAttack.x = player.x-16;
-        invisAttack.scale.x = 20;
-        invisAttack.scale.y = player.height;
-      } else if (player.facing === "right") {
-        invisAttack.x = player.x+16;
-        invisAttack.scale.x = 20;
-        invisAttack.scale.y = player.height;
-      } else if (player.facing === "up") {
-        invisAttack.y = player.y-23;
-        invisAttack.scale.x = player.width;
-        invisAttack.scale.y = 20;
-      } else if (player.facing === "down") {
-        invisAttack.y = player.y+23;
-        invisAttack.scale.x = player.width;
-        invisAttack.scale.y = 20;
-      }
-      enemies.forEach(function(enemy){
-        game.physics.arcade.collide(enemy, invisAttack, damageEnemy, null, this);
-      });
     }
 
      if (cursors.left.isDown && cursors.right.isDown === false && cursors.up.isDown === false && cursors.down.isDown === false) {
       cursors.left.onDown.addOnce(this.walkLeft, this);
       player.body.velocity.x = -100;
       player.facing = "left";
-      
+
     } else if (cursors.right.isDown && cursors.left.isDown === false && cursors.up.isDown === false && cursors.down.isDown === false) {
       cursors.right.onDown.addOnce(this.walkRight, this);
       player.body.velocity.x = 100;
       player.facing = "right";
-      
+
     }
-    
+
     if (cursors.up.isDown && cursors.down.isDown === false && cursors.right.isDown === false && cursors.left.isDown === false) {
       cursors.up.onDown.addOnce(this.walkUp, this);
       player.body.velocity.y = -100;
       player.facing = "up";
-      
+
     } else if (cursors.down.isDown && cursors.up.isDown === false && cursors.right.isDown === false && cursors.left.isDown === false) {
       cursors.down.onDown.addOnce(this.walkDown, this);
       player.body.velocity.y = 100;
       player.facing = "down";
-       
+
     } else if (cursors.up.isDown === false && cursors.down.isDown === false && cursors.left.isDown === false && cursors.right.isDown === false) {
 
       player.animations.stop();
       player.frame = 4;
-      
+
     }
   }
 };
@@ -267,4 +237,3 @@ $(function(){
   game.state.add('Start', Start);
   game.state.start('Start');
 });
-
