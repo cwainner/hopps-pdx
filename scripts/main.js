@@ -23,7 +23,7 @@ Game.prototype = {
 		player.animations.play('walkRight', 8, true);
 	},
 	fireBullet: function() {
-		bullet = bullets.getFirstExists(false);
+		bullet = weapon.bullets.getFirstExists(false);
 		if (bullet) {
 			bullet.reset(player.x, player.y);
 			if (player.facing === "right") {
@@ -86,28 +86,23 @@ Game.prototype = {
 		// Create weapons and combat tracking
 		weapon = game.add.weapon(100, 'sword');
 		weapon.bulletSpeed = 100;
+		weapon.lifespan = 100;
 		weapon.fireRate = 100;
-		weapon.bulletKillType = Phaser.Weapon.KILL_DISTANCE;
-		weapon.bulletKillDistance = 10;
+		weapon.bullets.bulletKillType = Phaser.Weapon.KILL_DISTANCE;
+		weapon.bullets.bulletKillDistance = 100;
 		weapon.autofire = false;
-		// weapon.trackSprite(player, 0, 0, true);
-		bullets = game.add.group();
-		bullets.enableBody = true;
-		bullets.physicsBodyType = Phaser.Physics.ARCADE;
-		for (var i = 0; i < 200; i++) {
-			var b = bullets.create(0, 0, 'sword');
-			b.name = 'bullet' + i;
-			b.exists = false;
-			b.visible = false;
-		}
+		weapon.autoExpandBulletsGroup = true;
+		weapon.trackSprite(player, 0, 0, true);
+		game.physics.arcade.enable(weapon.bullets);
+		weapon.bullets.enableBody = true;
+		game.physics.arcade.enable(weapon);
+		weapon.enableBody = true;
 
 		cursors = game.input.keyboard.createCursorKeys();
 		attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 	},
 	update: function () {
-		game.physics.arcade.overlap(bullets, enemies, weaponHit, null, this);
-		// game.physics.arcade.collide(enemy, player);
-		//    game.physics.arcade.collide(enemies, player, collisionDetection, null, this);
+		game.physics.arcade.collide(weapon.bullets, enemies, function(bullet, enemy){bullet.kill(); enemy.kill();});
 		player.body.velocity.x = 0;
 		player.body.velocity.y = 0;
 		game.physics.arcade.collide(player, layer)
