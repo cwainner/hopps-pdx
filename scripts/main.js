@@ -5,8 +5,11 @@ function Game(){
 Game.prototype = {
   preload: function(){
     game.physics.startSystem(Phaser.Physics.ARCADE);
-    game.load.image('background', 'assets/background.png');
-
+    //game.load.image('background', 'assets/background.png');
+    game.load.tilemap('map', 'assets/collision_test.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.image('ground_1x1', 'assets/ground_1x1.png');
+    game.load.image('walls_1x2', 'assets/walls_1x2.png');
+    game.load.image('tiles2', 'assets/tiles2.png');
     game.load.spritesheet('player', 'animations/player/PlayerWalkDown.png', 32, 46);
     game.load.spritesheet('player2', 'animations/player/PlayerWalkUp.png', 32, 46);
     game.load.spritesheet('player3', 'animations/player/PlayerWalkRight.png', 32, 48);
@@ -16,12 +19,29 @@ Game.prototype = {
   },
 
   create: function(){
-    game.add.sprite(0, 0, 'background');
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+//  game.add.sprite(0, 0, 'background');
     player = game.add.sprite(32, game.world.height - 150, 'player');
     player.health = 10;
     game.physics.arcade.enable(player);
     player.enableBody = true;
     player.body.collideWorldBounds = true;
+    game.stage.backgroundColor = '#2d2d2d';
+    map = game.add.tilemap('map');
+    map.addTilesetImage('ground_1x1');
+    map.addTilesetImage('walls_1x2');
+    map.addTilesetImage('tiles2');
+    layer = map.createLayer('Tile Layer 1');
+    
+    layer.resizeWorld();
+    map.setCollisionBetween(1, 100, true, 'Tile Layer 1');
+    player = game.add.sprite(32, game.world.height - 150, 'player');
+    player.health = 10;
+    game.physics.arcade.enable(player);
+    
+    game.camera.follow(player);
+    game.physics.arcade.setBoundsToWorld(true, true, true, true, false);
+    player.enableBody = true;
     
     player.animations.add('walkRight', [0,1,2,3]);
     player.animations.add('walkDown', [0,1,2,3]);
@@ -98,6 +118,8 @@ Game.prototype = {
 //    game.physics.arcade.collide(enemies, player, collisionDetection, null, this);
     player.body.velocity.x = 0;
     player.body.velocity.y = 0;
+    game.physics.arcade.collide(player, layer)
+    game.physics.arcade.collide(enemies, layer)
 		enemies.forEach(function(enemy){
 			game.physics.arcade.collide(enemy, player, collisionDetection, null, this);
 			enemy.body.velocity.x = 0;
