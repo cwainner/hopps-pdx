@@ -6,6 +6,7 @@ Game.prototype = {
   preload: function(){
     game.physics.startSystem(Phaser.Physics.ARCADE);
     game.load.image('background', 'assets/background.png');
+
     game.load.spritesheet('player', 'animations/player/PlayerWalkDown.png', 32, 46);
     game.load.spritesheet('player2', 'animations/player/PlayerWalkUp.png', 32, 46);
     game.load.spritesheet('player3', 'animations/player/PlayerWalkRight.png', 32, 48);
@@ -92,6 +93,7 @@ Game.prototype = {
 
   game.physics.arcade.overlap(bullets, enemies, weaponHit, null, this);
 
+
     // game.physics.arcade.collide(enemy, player);
 //    game.physics.arcade.collide(enemies, player, collisionDetection, null, this);
     player.body.velocity.x = 0;
@@ -130,6 +132,7 @@ Game.prototype = {
         game.physics.arcade.collide(enemy, invisAttack, damageEnemy, null, this);
       });
     }
+
      if (cursors.left.isDown && cursors.right.isDown === false && cursors.up.isDown === false && cursors.down.isDown === false) {
       cursors.left.onDown.addOnce(this.walkLeft, this);
       player.body.velocity.x = -100;
@@ -153,6 +156,7 @@ Game.prototype = {
       player.facing = "down";
        
     } else if (cursors.up.isDown === false && cursors.down.isDown === false && cursors.left.isDown === false && cursors.right.isDown === false) {
+
       player.animations.stop();
       player.frame = 4;
       
@@ -198,12 +202,14 @@ Start.prototype = {
     this.loadScripts();
   },
 
+
   addGameStates: function(){
     game.state.add('Game', Game);
     game.state.add('Options', Options);
     game.state.add('Credits', Credits);
     game.state.add('Pause', Pause);
   },
+
 
   create: function(){
     this.addGameStates();
@@ -239,3 +245,4 @@ $(function(){
   game.state.add('Start', Start);
   game.state.start('Start');
 });
+

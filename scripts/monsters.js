@@ -1,15 +1,44 @@
-EnemyCalifornian = function(index,game,x,y) {
-    
-    this.californian = game.add.sprite(x,y,'californian');
-    this.californian.anchor.setTo(0.5,0.5);
-    this.californian.name = index.toString();
-    game.physics.enable(this.californian,Phaser.Physics.ARCADE);
-    this.californian.immovable = false;
-    this.californianTween = game.add.tween(this.californian).to({
-        x: this.californian.x + 300
-    },2000,'Linear',true,0,100,true);
-    
-    this.californian.body.collideWorldBounds = true;
-    
-    
+var Monster = function(game, monsterType){
+	
+	Phaser.Sprite.call(this, game, game.world.randomX, game.world.randomY, monsterType);
+	this.canAttack = true;
+    this.health = 2;
+	
+}
+
+Monster.prototype = Object.create(Phaser.Sprite.prototype);
+Monster.prototype.constructor = Monster;
+
+
+function createMonsters() {
+   for(var i = 0; i < 10; i++){
+//		enemies.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'californian');
+		 enemies.add(new Monster(game, 'californian'));
+	 }
+	game.physics.arcade.enable(enemies);
+	enemies.enableBody = true;
+	enemies.canAttack = true;
+}
+
+function collisionDetection(enemy, player) {
+	
+	if (enemy.canAttack === true) {
+		player.health--;
+		console.log(player.health);
+		enemy.canAttack = false;
+		setTimeout(function () { console.log("monstattk set to true"); enemy.canAttack = true; }, 2000);
+	}
+}
+
+function damageEnemy(enemy, player) {
+  enemy.health--;
+  if (enemy.health < 1) {
+    enemy.kill();
+  }
+}
+
+function weaponHit(bullet, enemy) {
+  bullet.kill();
+  enemy.kill();
+  console.log("hit")
 }
