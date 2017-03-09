@@ -48,8 +48,6 @@ function doAttack() {
 }
 }
 function damageEnemy(enemy, player) {
-	playerHit = game.add.audio('playerHit');
-	playerHit.play();
 	enemy.tint = 0xffd700;
 	setTimeout(function() {enemy.tint = 0xffffff;}, 333);
   enemy.health -= 1;
