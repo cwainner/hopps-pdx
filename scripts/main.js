@@ -113,8 +113,10 @@ Game.prototype = {
 			game.physics.arcade.moveToObject(enemy, player, 30);
 			game.physics.arcade.moveToObject(invisAttack, player, 100);
 		})
+
 		//  Attacking?
-		if (attackButton.isDown)
+		attackButton.onDown.add(attackFunction, this)
+		function attackFunction()  {
     {
 			if (player.facing === "left") {
         invisAttack.scale.x = 1.5;
@@ -136,7 +138,8 @@ Game.prototype = {
       enemies.forEach(function(enemy){
         game.physics.arcade.collide(enemy, invisAttack, damageEnemy, null, this);
       });
-    }
+		}
+	}
 		if (cursors.left.isDown && cursors.right.isDown === false && cursors.up.isDown === false && cursors.down.isDown === false) {
 			cursors.left.onDown.addOnce(this.walkLeft, this);
 			player.body.velocity.x = -100;
