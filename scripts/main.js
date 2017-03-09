@@ -128,6 +128,10 @@ Game.prototype = {
 		game.load.image('sword', 'assets/sword.png');
 		game.load.image('guiBackground', 'assets/GUI.png');
 		game.load.audio('music', 'assets/music/backgroundMusic.mp3');
+		// game.load.audio('swingSword', 'assets/sfx/knifeSlice.ogg');
+		// playerHit = game.add.audio('playerHit');
+		// monsterHit = game.add.audio('monsterHit');
+		// swingSword = game.add.audio('swingSword');
 	},
 	create: function () {
 		// Enable physics
@@ -218,6 +222,7 @@ Game.prototype = {
 		//Start music
 		music = game.add.audio('music');
 		music.loopFull(0.8);
+		music.volume = 0.5;
 	},
 	update: function () {
 		game.physics.arcade.moveToObject(invisAttack, player, 100);
@@ -253,6 +258,7 @@ Game.prototype = {
 
 		attackButton.onDown.addOnce(attackFunction, this);
 		function attackFunction() {
+			// swingSword.play();
 			if (player.facing === "left") {
 				  this.attackLeft();
 
