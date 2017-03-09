@@ -3,6 +3,8 @@ var Monster = function(game, monsterType){
 	Phaser.Sprite.call(this, game, game.world.randomX, game.world.randomY, monsterType);
 	this.canAttack = true;
     this.health = 10;
+    this.animations.add('walk');
+    this.animations.play('walk', 5, true);
 
 }
 
@@ -18,6 +20,7 @@ function createMonsters() {
 	game.physics.arcade.enable(enemies);
 	enemies.enableBody = true;
 	enemies.canAttack = true;
+    
 
 }
 
