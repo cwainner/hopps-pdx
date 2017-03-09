@@ -30,13 +30,17 @@ function createBeer() {
 	}
 }
 
+var invincibilityTimer = false;
+
 function collisionDetection(enemy, player) {
 setTimeout(doAttack(), 500);
 function doAttack() {
-	if (enemy.canAttack === true) {
+	if (enemy.canAttack === true && invincibilityTimer === false) {
 		player.tint = Math.random() * 0xffffff;
 		player.health--;
 		enemy.canAttack = false;
+		invincibilityTimer = true;
+		setTimeout(function () {invincibilityTimer = false;}, 1000)
 		setTimeout(function () {player.tint = 0xffffff;}, 666)
 		setTimeout(function () { enemy.canAttack = true;}, 2000);
 
@@ -44,6 +48,8 @@ function doAttack() {
 }
 }
 function damageEnemy(enemy, player) {
+	playerHit = game.add.audio('playerHit');
+	playerHit.play();
 	enemy.tint = 0xffd700;
 	setTimeout(function() {enemy.tint = 0xffffff;}, 333);
   enemy.health -= 1;
