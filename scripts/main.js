@@ -123,14 +123,14 @@ Game.prototype = {
 		game.load.spritesheet('playerAttackUp', 'animations/player/PlayerAttackUp.png', 64, 48);
 		game.load.spritesheet('playerAttackRight', 'animations/player/PlayerAttackRight.png', 64, 48);
 		game.load.spritesheet('playerAttackLeft', 'animations/player/PlayerAttackLeft.png', 64, 48);
-		game.load.spritesheet('agent', 'animations/enemy/enemyDown.png', 32, 48);
-		game.load.spritesheet('californian', 'animations/enemy/enemyDown.png', 32, 48);
+		game.load.spritesheet('agent', 'animations/enemy/enemySpriteSheet.png', 33, 48);
+		game.load.image('californian', 'assets/monster.png');
 		game.load.image('sword', 'assets/sword.png');
 		game.load.image('guiBackground', 'assets/GUI.png');
 		game.load.audio('music', 'assets/music/backgroundMusic.mp3');
 		game.load.audio('swingSword', 'assets/sfx/knifeSlice.ogg');
 		game.load.audio('gameOver', 'assets/sfx/game_over.ogg');
-		game.load.audio('drink', 'assets/sfx/bottle.wav')
+		game.load.audio('gameWin', 'assets/sfx/you_win.ogg');
 	},
 	create: function () {
 		// Enable physics
@@ -195,6 +195,10 @@ Game.prototype = {
 		player.animations.add('attackDown', [0, 1, 2, 3]);
 		player.animations.add('attackUp', [0, 1, 2, 3]);
 		player.animations.add('attackLeft', [0, 1, 2, 3]);
+
+		enemies = game.add.group();
+
+
     map.setCollisionBetween(1, 100, true,'Enemy');
     enemyBounds.alpha = 0;
 		game.camera.follow(player);
@@ -212,14 +216,15 @@ Game.prototype = {
         
 		enemies = game.add.group();
 		createMonsters();
+
         enemies.add(boss);
-        boss.health =500;
+        boss.health =1200;
         
         enemies.callAll('animations.add', 'animations', 'walk', [0,1,2,3], 5, true);
         enemies.callAll('play', null, 'walk');
+
 		beers = game.add.group();
 		createBeer();
-
 
 		cursors = game.input.keyboard.createCursorKeys();
 		attackButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -247,13 +252,14 @@ Game.prototype = {
 
 		player.body.velocity.x = 0;
 		player.body.velocity.y = 0;
-		game.physics.arcade.collide(player, layer)
-		game.physics.arcade.collide(enemies, enemyBounds)
-    game.physics.arcade.collide(enemies, layer)
+		game.physics.arcade.collide(player, layer);
+		game.physics.arcade.collide(enemies, enemyBounds);
+    game.physics.arcade.collide(enemies, layer);
+		game.physics.arcade.collide(beers, layer);
 
 		beers.forEach(function(beer) {
+			game.physics.arcade.collide(beer, layer, moveBeer, null, this);
 			game.physics.arcade.collide(beer, player, getBeer, null, this);
-
 
 		});
 
@@ -274,7 +280,7 @@ Game.prototype = {
 		attackButton.onDown.addOnce(attackFunction, this);
 		function attackFunction() {
 			swingSword = game.add.audio('swingSword');
-			swingSword.volume = 0.005;
+
 			swingSword.play();
 			if (player.facing === "left") {
 				  this.attackLeft();
