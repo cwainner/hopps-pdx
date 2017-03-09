@@ -116,6 +116,7 @@ Game.prototype = {
 		game.load.image('californian', 'assets/monster.png');
 		game.load.image('sword', 'assets/sword.png');
 		game.load.image('guiBackground', 'assets/GUI.png');
+		game.load.audio('music', 'assets/music/backgroundMusic.mp3');
 	},
 	create: function () {
 		// Enable physics
@@ -163,10 +164,6 @@ Game.prototype = {
 		game.physics.arcade.enable(invisAttack);
 
 		// Create map
-
-
-
-
 		map.setCollisionBetween(1, 100, true, 'Tile Layer 1');
 		map.setCollisionBetween(1, 100, false, 'Tile Layer 4');
     map.setCollisionBetween(1, 100, true,'Enemy');
@@ -204,6 +201,10 @@ Game.prototype = {
 		// Create GUI
 		gui = new Gui();
 		gui.create();
+		
+		//Start music
+		music = game.add.audio('music');
+		music.loopFull(0.8);
 	},
 	update: function () {
 		// invisAttack.scale.x = .1;

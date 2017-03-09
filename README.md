@@ -45,11 +45,12 @@ _Please send any requests to chris.jwainner@gmail.com_
 
 ## Technologies used
 
+_Phaser_  
 _HTML_  
 _CSS_  
 _Boostrap_  
 _Javascript_  
-_JQuery_  
+_JQuery_
 
 ### License
 
