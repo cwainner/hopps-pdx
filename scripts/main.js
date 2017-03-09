@@ -123,8 +123,8 @@ Game.prototype = {
 		game.load.spritesheet('playerAttackUp', 'animations/player/PlayerAttackUp.png', 64, 48);
 		game.load.spritesheet('playerAttackRight', 'animations/player/PlayerAttackRight.png', 64, 48);
 		game.load.spritesheet('playerAttackLeft', 'animations/player/PlayerAttackLeft.png', 64, 48);
-		game.load.spritesheet('agent', 'animations/enemy/enemySpriteSheet.png', 33, 48);
-		game.load.image('californian', 'assets/monster.png');
+		game.load.spritesheet('agent', 'animations/enemy/enemyDown.png', 32, 48);
+		game.load.spritesheet('californian', 'animations/enemy/enemyDown.png', 32, 48);
 		game.load.image('sword', 'assets/sword.png');
 		game.load.image('guiBackground', 'assets/GUI.png');
 		game.load.audio('music', 'assets/music/backgroundMusic.mp3');
@@ -213,13 +213,13 @@ Game.prototype = {
         game.physics.arcade.enable(boss);
         boss.enableBody = true;
         boss.canAttack = true;
-        
+
 		enemies = game.add.group();
 		createMonsters();
 
         enemies.add(boss);
         boss.health =1200;
-        
+
         enemies.callAll('animations.add', 'animations', 'walk', [0,1,2,3], 5, true);
         enemies.callAll('play', null, 'walk');
 
@@ -240,6 +240,8 @@ Game.prototype = {
 	},
 	update: function () {
         if (boss.alive === false) {
+					gameWin = game.add.audio('gameWin');
+					gameWin.play();
             setTimeout(function() {game.state.start('GameWin')}, 2000);
         }
 		game.physics.arcade.moveToObject(invisAttack, player, 100);

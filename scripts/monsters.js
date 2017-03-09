@@ -25,7 +25,7 @@ function createMonsters() {
 }
 
 function createBeer() {
-	for(var j = 0; j < 4; j++) {
+	for(var j = 0; j < 10; j++) {
 		beer = game.add.sprite(game.world.randomX, game.world.randomY, 'beer');
 		beers.add(beer);
 		game.physics.arcade.enable(beers);
