@@ -128,10 +128,8 @@ Game.prototype = {
 		game.load.image('sword', 'assets/sword.png');
 		game.load.image('guiBackground', 'assets/GUI.png');
 		game.load.audio('music', 'assets/music/backgroundMusic.mp3');
-		// game.load.audio('swingSword', 'assets/sfx/knifeSlice.ogg');
-		// playerHit = game.add.audio('playerHit');
-		// monsterHit = game.add.audio('monsterHit');
-		// swingSword = game.add.audio('swingSword');
+		game.load.audio('swingSword', 'assets/sfx/knifeSlice.ogg');
+		game.load.audio('gameOver', 'assets/sfx/game_over.ogg');
 	},
 	create: function () {
 		// Enable physics
@@ -228,6 +226,8 @@ Game.prototype = {
 		game.physics.arcade.moveToObject(invisAttack, player, 100);
 
 		if(player.health <= 0){
+			gameOver = game.add.audio('gameOver');
+			gameOver.play();
 			game.state.start('GameOver');
 		}
 
@@ -258,7 +258,9 @@ Game.prototype = {
 
 		attackButton.onDown.addOnce(attackFunction, this);
 		function attackFunction() {
-			// swingSword.play();
+			swingSword = game.add.audio('swingSword');
+
+			swingSword.play();
 			if (player.facing === "left") {
 				  this.attackLeft();
 
