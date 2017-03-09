@@ -123,8 +123,8 @@ Game.prototype = {
 		game.load.spritesheet('playerAttackUp', 'animations/player/PlayerAttackUp.png', 64, 48);
 		game.load.spritesheet('playerAttackRight', 'animations/player/PlayerAttackRight.png', 64, 48);
 		game.load.spritesheet('playerAttackLeft', 'animations/player/PlayerAttackLeft.png', 64, 48);
-		game.load.spritesheet('agent', 'animations/enemy/enemySpriteSheet.png', 33, 48);
-		game.load.image('californian', 'assets/monster.png');
+		game.load.spritesheet('agent', 'animations/enemy/enemyDown.png', 32, 48);
+		game.load.spritesheet('californian', 'animations/enemy/enemyDown.png', 32, 48);
 		game.load.image('sword', 'assets/sword.png');
 		game.load.image('guiBackground', 'assets/GUI.png');
 		game.load.audio('music', 'assets/music/backgroundMusic.mp3');
@@ -195,10 +195,6 @@ Game.prototype = {
 		player.animations.add('attackDown', [0, 1, 2, 3]);
 		player.animations.add('attackUp', [0, 1, 2, 3]);
 		player.animations.add('attackLeft', [0, 1, 2, 3]);
-
-		enemies = game.add.group();
-
-
     map.setCollisionBetween(1, 100, true,'Enemy');
     enemyBounds.alpha = 0;
 		game.camera.follow(player);
@@ -207,6 +203,8 @@ Game.prototype = {
 		// Create enemies
 		enemies = game.add.group();
 		createMonsters();
+        enemies.callAll('animations.add', 'animations', 'walk', [0,1,2,3], 5, true);
+        enemies.callAll('play', null, 'walk');
 		beers = game.add.group();
 		createBeer();
 
