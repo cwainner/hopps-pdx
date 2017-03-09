@@ -51,10 +51,13 @@ function doAttack() {
 	}
 }
 }
+var attackTimeout = false;
 function damageEnemy(enemy, player) {
+	if (attackTimeout === false) {
+		attackTimeout = true;
 	enemy.tint = 0xffd700;
 	setTimeout(function() {enemy.tint = 0xffffff;}, 333);
-  enemy.health -= 1;
+  enemy.health -= 5;
 	console.log(enemy.health);
   if (enemy.health < 1) {
 		enemy.animations.stop();
@@ -67,6 +70,8 @@ function damageEnemy(enemy, player) {
 		setTimeout(function () { enemy.destroy();}, 1000);
 
   }
+	setTimeout(function() {attackTimeout = false;}, 666);
+}
 }
 
 function getBeer(beer, player) {
