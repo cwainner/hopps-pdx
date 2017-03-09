@@ -18,10 +18,6 @@ Gui.prototype = {
 	create: function(){
 		var guiBckgnd = game.add.sprite(game.camera.x / 2, game.camera.y / 2, 'guiBackground');
 		guiBckgnd.fixedToCamera = true;
-//		guiBckgnd.anchor.setTo(0.5, 0.5);
-		this.addMenuOption('Pause', function(e){
-			game.paused = true;
-		});
 		healthText = game.add.text(game.camera.x + 600, game.camera.y + 550, "Health: " + player.health, style.navitem.default);
 		healthText.fixedToCamera = true;
 	},
