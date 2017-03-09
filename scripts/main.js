@@ -206,8 +206,8 @@ Game.prototype = {
 		gui.create();
 	},
 	update: function () {
-		// invisAttack.scale.x = .1;
-		// invisAttack.scale.y = .1;
+		game.physics.arcade.moveToObject(invisAttack, player, 100);
+
 		if(player.health <= 0){
 			game.state.start('GameOver');
 		}
@@ -217,14 +217,14 @@ Game.prototype = {
 		game.physics.arcade.collide(player, layer)
 		game.physics.arcade.collide(enemies, enemyBounds)
     game.physics.arcade.collide(enemies, layer)
-		game.physics.arcade.collide(invisAttack, layer)
+
 
 		enemies.forEach(function (enemy) {
 			game.physics.arcade.collide(enemy, player, collisionDetection, null, this);
 			enemy.body.velocity.x = 0;
 			enemy.body.velocity.y = 0;
 			game.physics.arcade.moveToObject(enemy, player, 30);
-			game.physics.arcade.moveToObject(invisAttack, player, 100);
+
 		})
 
 		//  Attacking?
