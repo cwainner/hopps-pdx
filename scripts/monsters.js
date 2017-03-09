@@ -21,6 +21,15 @@ function createMonsters() {
 
 }
 
+function createBeer() {
+	for(var j = 0; j < 4; j++) {
+		beer = game.add.sprite(game.world.randomX, game.world.randomY, 'beer');
+		beers.add(beer);
+		game.physics.arcade.enable(beers);
+		beers.enableBody = true;
+	}
+}
+
 function collisionDetection(enemy, player) {
 
 	if (enemy.canAttack === true) {
@@ -33,7 +42,7 @@ function collisionDetection(enemy, player) {
 	}
 }
 function damageEnemy(enemy, player) {
-  enemy.health--;
+  enemy.health -= 1;
 	console.log(enemy.health);
   if (enemy.health < 1) {
 		enemy.canAttack = false;
@@ -42,4 +51,11 @@ function damageEnemy(enemy, player) {
 		setTimeout(function () { enemy.destroy();}, 1000);
 
   }
+}
+
+function getBeer(beer, player) {
+	player.scale.setTo(2,2);
+	player.health += 5;
+	setTimeout(function () { player.scale.setTo(1,1);}, 333);
+	beer.destroy();
 }

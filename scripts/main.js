@@ -25,8 +25,8 @@ Game.prototype = {
 	//--------------------------------------------------------------------
 	attackDown: function() {
 		//var newPosition = player.x - 16
-		invisAttack.scale.x = 1;
-		invisAttack.scale.y = 1;
+		invisAttack.scale.x = 1.3;
+		invisAttack.scale.y = 1.5;
 		game.physics.arcade.moveToXY(invisAttack, player.x, player.y+50, 300);
 
 		player.body.setSize(64, 56, 16, 0)
@@ -46,8 +46,8 @@ Game.prototype = {
 	//-------------------------------------------------------------------------
 	attackUp: function() {
 		//var newPosition = player.x - 16
-		invisAttack.scale.x = 1;
-		invisAttack.scale.y = 1;
+		invisAttack.scale.x = 1.3;
+		invisAttack.scale.y = 1.5;
 		game.physics.arcade.moveToXY(invisAttack, player.x, player.y-50, 300);
 		player.body.setSize(64, 56, 16, 0)
 		player.loadTexture('playerAttackUp', 0);
@@ -66,8 +66,8 @@ Game.prototype = {
 	//-------------------------------------------------------------------------
 	attackRight: function() {
 		//var newPosition = player.x - 16
-		invisAttack.scale.x = 1;
-		invisAttack.scale.y = 1;
+		invisAttack.scale.x = 1.5;
+		invisAttack.scale.y = 1.3;
 		game.physics.arcade.moveToXY(invisAttack, player.x+30, player.y, 300);
 		player.body.setSize(64, 56, 0, 0)
 		player.loadTexture('playerAttackRight', 0);
@@ -86,8 +86,8 @@ Game.prototype = {
 	// -------------------------------------------------------------------------
 	attackLeft: function() {
 		//var newPosition = player.x - 16
-		invisAttack.scale.x = 1;
-		invisAttack.scale.y = 1;
+		invisAttack.scale.x = 1.5;
+		invisAttack.scale.y = 1.3;
 		game.physics.arcade.moveToXY(invisAttack, player.x-30, player.y, 300);
 		player.body.setSize(64, 56, 0, 0)
 		player.loadTexture('playerAttackLeft', 0);
@@ -114,6 +114,7 @@ Game.prototype = {
 		game.load.image('walls_1x2', 'assets/walls_1x2.png');
 		game.load.image('tiles2', 'assets/tiles2.png');
     game.load.image('pdxcarpet', 'assets/pdxcarpet.png');
+		game.load.image('beer', 'assets/beer.png');
 		game.load.spritesheet('player', 'animations/player/PlayerWalkDown.png', 32, 46);
 		game.load.spritesheet('player2', 'animations/player/PlayerWalkUp.png', 32, 46);
 		game.load.spritesheet('player3', 'animations/player/PlayerWalkRight.png', 32, 48);
@@ -202,6 +203,8 @@ Game.prototype = {
 		// Create enemies
 		enemies = game.add.group();
 		createMonsters();
+		beers = game.add.group();
+		createBeer();
 
 
 		cursors = game.input.keyboard.createCursorKeys();
@@ -228,6 +231,10 @@ Game.prototype = {
 		game.physics.arcade.collide(enemies, enemyBounds)
     game.physics.arcade.collide(enemies, layer)
 
+		beers.forEach(function(beer) {
+			game.physics.arcade.collide(beer, player, getBeer, null, this);
+			
+		});
 
 		enemies.forEach(function (enemy) {
 			if (game.physics.arcade.distanceBetween(enemy, player) < 30) {
