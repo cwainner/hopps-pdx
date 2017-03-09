@@ -113,6 +113,7 @@ Game.prototype = {
 		game.load.spritesheet('playerAttackUp', 'animations/player/PlayerAttackUp.png', 64, 48);
 		game.load.spritesheet('playerAttackRight', 'animations/player/PlayerAttackRight.png', 64, 48);
 		game.load.spritesheet('playerAttackLeft', 'animations/player/PlayerAttackLeft.png', 64, 48);
+		game.load.spritesheet('agent', 'animations/enemy/enemySpriteSheet.png', 33, 48);
 		game.load.image('californian', 'assets/monster.png');
 		game.load.image('sword', 'assets/sword.png');
 		game.load.image('guiBackground', 'assets/GUI.png');
