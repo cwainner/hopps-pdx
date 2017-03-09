@@ -24,15 +24,15 @@ Game.prototype = {
 
 	//--------------------------------------------------------------------
 	attackDown: function() {
-		var newPosition = player.x - 16
+		//var newPosition = player.x - 16
 
 		player.body.setSize(64, 56, 16, 0)
 		player.loadTexture('playerAttackDown', 0);
-		player.x = newPosition;
+		//player.x = newPosition;
 		player.animations.stop();
 		var down = player.animations.play('attackDown', 8, false);
 		down.onComplete.add(function () {
-			player.x = newPosition + 16;
+			//player.x = newPosition + 16;
 			player.loadTexture('player',0);
 			player.body.setSize(32, 46, 0, 0)
 		});
@@ -42,15 +42,15 @@ Game.prototype = {
 
 	//-------------------------------------------------------------------------
 	attackUp: function() {
-		var newPosition = player.x - 16
+		//var newPosition = player.x - 16
 
 		player.body.setSize(64, 56, 16, 0)
 		player.loadTexture('playerAttackUp', 0);
-		player.x = newPosition;
+		//player.x = newPosition;
 		player.animations.stop();
 		var down = player.animations.play('attackUp', 8, false);
 		down.onComplete.add(function () {
-			player.x = newPosition + 16;
+			//player.x = newPosition + 16;
 			player.loadTexture('player2',0);
 			player.body.setSize(32, 46, 0, 0)
 		});
@@ -60,15 +60,15 @@ Game.prototype = {
 
 	//-------------------------------------------------------------------------
 	attackRight: function() {
-		var newPosition = player.x - 16
+		//var newPosition = player.x - 16
 
 		player.body.setSize(64, 56, 0, 0)
 		player.loadTexture('playerAttackRight', 0);
-		player.x = newPosition;
+		//player.x = newPosition;
 		player.animations.stop();
 		var down = player.animations.play('attackRight', 8, false);
 		down.onComplete.add(function () {
-			player.x = newPosition + 16;
+			//player.x = newPosition + 16;
 			player.loadTexture('player3',0);
 			player.body.setSize(32, 46, 0, 0)
 		});
@@ -78,15 +78,15 @@ Game.prototype = {
 
 	// -------------------------------------------------------------------------
 	attackLeft: function() {
-		var newPosition = player.x - 16
+		//var newPosition = player.x - 16
 
 		player.body.setSize(64, 56, 0, 0)
 		player.loadTexture('playerAttackLeft', 0);
-		player.x = newPosition;
+		//player.x = newPosition;
 		player.animations.stop();
 		var down = player.animations.play('attackLeft', 8, false);
 		down.onComplete.add(function () {
-			player.x = newPosition + 16;
+			//player.x = newPosition + 16;
 			player.loadTexture('player4', 0);
 			player.body.setSize(32, 46, 0, 0)
 		});
@@ -233,20 +233,24 @@ Game.prototype = {
 		attackButton.onDown.add(attackFunction, this);
 		function attackFunction() {
 			if (player.facing === "left") {
-        	invisAttack.scale.x = 1.5;
-        	invisAttack.scale.y = 1.3;
+				  this.attackLeft();
+        	invisAttack.scale.x = 1;
+        	invisAttack.scale.y = 1;
 					game.physics.arcade.moveToXY(invisAttack, player.x-25, player.y, 300);
       } else if (player.facing === "right") {
-        	invisAttack.scale.x = 1.5;
-        	invisAttack.scale.y = 1.3;
+        	this.attackRight();
+        	invisAttack.scale.x = 1;
+        	invisAttack.scale.y = 1;
 					game.physics.arcade.moveToXY(invisAttack, player.x+25, player.y, 300);
       } else if (player.facing === "up") {
-        	invisAttack.scale.x = 1.3;
-        	invisAttack.scale.y = 1.5;
+        	this.attackUp();
+        	invisAttack.scale.x = 1;
+        	invisAttack.scale.y = 1;
 					game.physics.arcade.moveToXY(invisAttack, player.x, player.y-50, 300);
       } else if (player.facing === "down") {
-        	invisAttack.scale.x = 1.3;
-        	invisAttack.scale.y = 1.5;
+        	this.attackDown();
+        	invisAttack.scale.x = 1;
+        	invisAttack.scale.y = 1;
 					game.physics.arcade.moveToXY(invisAttack, player.x, player.y+50, 300);
       }
       enemies.forEach(function(enemy){
