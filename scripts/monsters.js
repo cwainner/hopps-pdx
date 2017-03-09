@@ -31,20 +31,26 @@ function createBeer() {
 }
 
 function collisionDetection(enemy, player) {
-
+setTimeout(doAttack(), 500);
+function doAttack() {
 	if (enemy.canAttack === true) {
-
+		player.tint = Math.random() * 0xffffff;
 		player.health--;
 		enemy.canAttack = false;
-
-		setTimeout(function () { enemy.canAttack = true; }, 2000);
+		setTimeout(function () {player.tint = 0xffffff;}, 666)
+		setTimeout(function () { enemy.canAttack = true;}, 2000);
 
 	}
 }
+}
 function damageEnemy(enemy, player) {
+	enemy.tint = 0xffd700;
+	setTimeout(function() {enemy.tint = 0xffffff;}, 333);
   enemy.health -= 1;
 	console.log(enemy.health);
   if (enemy.health < 1) {
+		enemy.tint = 0x000000;
+		enemy.body.enable = false;
 		enemy.canAttack = false;
 		enemy.anchor.setTo(0.5, 0.5);
 		enemy.angle += 15;
@@ -54,8 +60,11 @@ function damageEnemy(enemy, player) {
 }
 
 function getBeer(beer, player) {
+	player.tint = Math.random() * 0xffffff;
 	player.scale.setTo(2,2);
 	player.health += 5;
-	setTimeout(function () { player.scale.setTo(1,1);}, 333);
+	setTimeout(function () { player.scale.setTo(1,1);}, 250);
+	setTimeout(function () { player.scale.setTo(2,2);}, 500);
+	setTimeout(function () { player.scale.setTo(1,1); player.tint = 0xffffff;}, 750);
 	beer.destroy();
 }

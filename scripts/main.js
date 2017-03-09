@@ -234,13 +234,13 @@ Game.prototype = {
 
 		beers.forEach(function(beer) {
 			game.physics.arcade.collide(beer, player, getBeer, null, this);
-			
+
 		});
 
 		enemies.forEach(function (enemy) {
 			if (game.physics.arcade.distanceBetween(enemy, player) < 30) {
 				console.log("ay we close");
-				game.physics.arcade.moveToXY(enemy, player.x+20, player.y, 300);
+				game.physics.arcade.moveToXY(enemy, player.x+enemy.x, player.y+enemy.y, 300);
 			}
 			game.physics.arcade.collide(enemy, player, collisionDetection, null, this);
 			enemy.body.velocity.x = 0;
