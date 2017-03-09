@@ -123,6 +123,7 @@ Game.prototype = {
 		game.load.spritesheet('playerAttackUp', 'animations/player/PlayerAttackUp.png', 64, 48);
 		game.load.spritesheet('playerAttackRight', 'animations/player/PlayerAttackRight.png', 64, 48);
 		game.load.spritesheet('playerAttackLeft', 'animations/player/PlayerAttackLeft.png', 64, 48);
+		game.load.spritesheet('agent', 'animations/enemy/enemySpriteSheet.png', 33, 48);
 		game.load.image('californian', 'assets/monster.png');
 		game.load.image('sword', 'assets/sword.png');
 		game.load.image('guiBackground', 'assets/GUI.png');
@@ -151,7 +152,7 @@ Game.prototype = {
 		layer.resizeWorld();
 
 		// Create player
-		player = game.add.sprite(32, 200, 'player');
+		player = game.add.sprite(17, 120, 'player');
 		player.health = 10;
 
 		player.anchor.setTo(0.5,0.5);
@@ -233,13 +234,13 @@ Game.prototype = {
 
 		beers.forEach(function(beer) {
 			game.physics.arcade.collide(beer, player, getBeer, null, this);
-			
+
 		});
 
 		enemies.forEach(function (enemy) {
 			if (game.physics.arcade.distanceBetween(enemy, player) < 30) {
 				console.log("ay we close");
-				game.physics.arcade.moveToXY(enemy, player.x+20, player.y, 300);
+				game.physics.arcade.moveToXY(enemy, player.x+enemy.x, player.y+enemy.y, 300);
 			}
 			game.physics.arcade.collide(enemy, player, collisionDetection, null, this);
 			enemy.body.velocity.x = 0;
