@@ -152,7 +152,7 @@ Game.prototype = {
 		layer.resizeWorld();
 
 		// Create player
-		player = game.add.sprite(32, 200, 'player');
+		player = game.add.sprite(17, 120, 'player');
 		player.health = 10;
 
 		player.anchor.setTo(0.5,0.5);
