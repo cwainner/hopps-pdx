@@ -9,7 +9,7 @@ Link to Github: <https://github.com/cwainner/hopps-pdx>
 
 ## Description
 
-_It was an ordinaory day in Portland for Hopps, until the baristas attacked! Now he must escape the underground and defeat any who get in his way._
+_It was an ordinaory day in PDX for Hopps, until the TSA agents attacked! Now he must escape the airport and defeat any who get in his way._
 
 ### Specs
 
