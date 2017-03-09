@@ -29,8 +29,17 @@ function collisionDetection(enemy, player) {
 	}
 }
 function damageEnemy(enemy, player) {
+	function enemyHealthText() {
+	var style = { font: "10px Arial", fill: "#ff0044", wordWrap: true, wordWrapWidth: player.width, align: "center" };
+    text = game.add.text(0, 0, "HIT!", style);
+    text.anchor.set(0.5);
+		text.x = Math.floor(enemy.x);
+		text.y = Math.floor(enemy.y + enemy.height / 2);
+		setTimeout(function () { text.destroy(); }, 1000);
 
-	console.log("HIT"+enemy);
+	}
+	enemyHealthText();
+	console.log("HIT");
   enemy.health--;
   if (enemy.health < 1) {
     enemy.kill();
