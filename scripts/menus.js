@@ -24,6 +24,7 @@ GameOver.prototype = {
 	},
   
   create: function(){
+		music.pause();
 		this.optionCount = 0;
 		game.add.existing(this.gameOverText);
     this.addMenuOption('Main Menu', function(e){
