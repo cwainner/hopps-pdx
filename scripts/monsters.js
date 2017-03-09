@@ -11,10 +11,10 @@ Monster.prototype.constructor = Monster;
 
 
 function createMonsters() {
-   for(var i = 0; i < 10; i++){
-//		enemies.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'californian');
-		 enemies.add(new Monster(game, 'californian'));
-	 }
+	for(var i = 0; i < 10; i++){
+		//enemies.create(360 + Math.random() * 200, 120 + Math.random() * 200, 'californian');
+		enemies.add(new Monster(game, 'californian'));
+	}
 	game.physics.arcade.enable(enemies);
 	enemies.enableBody = true;
 	enemies.canAttack = true;
