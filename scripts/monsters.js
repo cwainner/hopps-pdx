@@ -34,11 +34,12 @@ function collisionDetection(enemy, player) {
 }
 function damageEnemy(enemy, player) {
   enemy.health--;
+	console.log(enemy.health);
   if (enemy.health < 1) {
 		enemy.canAttack = false;
 		enemy.anchor.setTo(0.5, 0.5);
 		enemy.angle += 15;
-		setTimeout(function () { enemy.kill();}, 1000);
+		setTimeout(function () { enemy.destroy();}, 1000);
 
   }
 }
