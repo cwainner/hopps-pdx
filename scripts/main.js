@@ -263,24 +263,23 @@ Game.prototype = {
 
     	}
       
-		if (attackButton.isDown)
-    {
+		if (attackButton.isDown) {
 			if (player.facing === "left") {
-        invisAttack.scale.x = 1.5;
-        invisAttack.scale.y = 1.3;
-				game.physics.arcade.moveToXY(invisAttack, player.x-25, player.y, 300);
+        	invisAttack.scale.x = 1.5;
+        	invisAttack.scale.y = 1.3;
+					game.physics.arcade.moveToXY(invisAttack, player.x-25, player.y, 300);
       } else if (player.facing === "right") {
-        invisAttack.scale.x = 1.5;
-        invisAttack.scale.y = 1.3;
-				game.physics.arcade.moveToXY(invisAttack, player.x+25, player.y, 300);
+        	invisAttack.scale.x = 1.5;
+        	invisAttack.scale.y = 1.3;
+					game.physics.arcade.moveToXY(invisAttack, player.x+25, player.y, 300);
       } else if (player.facing === "up") {
-        invisAttack.scale.x = 1.3;
-        invisAttack.scale.y = 1.5;
-				game.physics.arcade.moveToXY(invisAttack, player.x, player.y-50, 300);
+        	invisAttack.scale.x = 1.3;
+        	invisAttack.scale.y = 1.5;
+					game.physics.arcade.moveToXY(invisAttack, player.x, player.y-50, 300);
       } else if (player.facing === "down") {
-        invisAttack.scale.x = 1.3;
-        invisAttack.scale.y = 1.5;
-				game.physics.arcade.moveToXY(invisAttack, player.x, player.y+50, 300);
+        	invisAttack.scale.x = 1.3;
+        	invisAttack.scale.y = 1.5;
+					game.physics.arcade.moveToXY(invisAttack, player.x, player.y+50, 300);
       }
       enemies.forEach(function(enemy){
         game.physics.arcade.collide(enemy, invisAttack, damageEnemy, null, this);
@@ -312,6 +311,9 @@ Game.prototype = {
 		 	player.animations.stop();
 		 	player.frame = 0;		
 		 }
+				// Update GUI
+			gui.update();
+		}
 	}
 };
 
