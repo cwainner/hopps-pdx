@@ -256,30 +256,11 @@ Game.prototype = {
 			game.physics.arcade.moveToObject(enemy, player, 30);
 			game.physics.arcade.moveToObject(invisAttack, player, 100);
 		})
+
 		//  Attacking?
 
-		game.input.keyboard.onUpCallback = function () {
-			if (attackButton.isUp &&  cursors.left.isUp && cursors.right.isUp && cursors.up.isUp && cursors.down.isUp) {
-				player.body.velocity.setTo(0, 0);
-			}
-		}
-		if (attackButton.isDown) {
-    		this.fireBullet(); 
-    		if (player.facing === "down") {
-    			attackButton.onDown.addOnce(this.attackDown, this);
-    	
-    	} else if (player.facing === "up") {
-    		attackButton.onDown.addOnce(this.attackUp, this);
-
-    	} else if (player.facing === "left") {
-    		attackButton.onDown.addOnce(this.attackLeft, this);
-
-    	} else if (player.facing === "right") {
-    		attackButton.onDown.addOnce(this.attackRight, this);
-
-    	}
-      
-		if (attackButton.isDown) {
+		attackButton.onDown.add(attackFunction, this)
+		function attackFunction() {
 			if (player.facing === "left") {
         	invisAttack.scale.x = 1.5;
         	invisAttack.scale.y = 1.3;
@@ -300,7 +281,6 @@ Game.prototype = {
       enemies.forEach(function(enemy){
         game.physics.arcade.collide(enemy, invisAttack, damageEnemy, null, this);
       });
-
     }
 		if (cursors.left.isDown && cursors.right.isDown === false && cursors.up.isDown === false && cursors.down.isDown === false) {
 			cursors.left.onDown.addOnce(this.walkLeft, this);
