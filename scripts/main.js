@@ -25,6 +25,9 @@ Game.prototype = {
 	//--------------------------------------------------------------------
 	attackDown: function() {
 		//var newPosition = player.x - 16
+		invisAttack.scale.x = 1;
+		invisAttack.scale.y = 1;
+		game.physics.arcade.moveToXY(invisAttack, player.x, player.y+50, 300);
 
 		player.body.setSize(64, 56, 16, 0)
 		player.loadTexture('playerAttackDown', 0);
@@ -43,7 +46,9 @@ Game.prototype = {
 	//-------------------------------------------------------------------------
 	attackUp: function() {
 		//var newPosition = player.x - 16
-
+		invisAttack.scale.x = 1;
+		invisAttack.scale.y = 1;
+		game.physics.arcade.moveToXY(invisAttack, player.x, player.y-50, 300);
 		player.body.setSize(64, 56, 16, 0)
 		player.loadTexture('playerAttackUp', 0);
 		//player.x = newPosition;
@@ -61,7 +66,9 @@ Game.prototype = {
 	//-------------------------------------------------------------------------
 	attackRight: function() {
 		//var newPosition = player.x - 16
-
+		invisAttack.scale.x = 1;
+		invisAttack.scale.y = 1;
+		game.physics.arcade.moveToXY(invisAttack, player.x+30, player.y, 300);
 		player.body.setSize(64, 56, 0, 0)
 		player.loadTexture('playerAttackRight', 0);
 		//player.x = newPosition;
@@ -79,7 +86,9 @@ Game.prototype = {
 	// -------------------------------------------------------------------------
 	attackLeft: function() {
 		//var newPosition = player.x - 16
-
+		invisAttack.scale.x = 1;
+		invisAttack.scale.y = 1;
+		game.physics.arcade.moveToXY(invisAttack, player.x-30, player.y, 300);
 		player.body.setSize(64, 56, 0, 0)
 		player.loadTexture('playerAttackLeft', 0);
 		//player.x = newPosition;
@@ -156,7 +165,7 @@ Game.prototype = {
 		player.frame = 0;
 
 		// Create invisible sprite for Attacking
-		invisAttack = game.add.sprite(player.x, player.y, 'sword');
+		invisAttack = game.add.sprite(player.x, player.y);
 		invisAttack.anchor.setTo(0.5,0.5);
 		invisAttack.scale.x = .1;
 		invisAttack.scale.y = .1;
@@ -201,7 +210,7 @@ Game.prototype = {
 		// Create GUI
 		gui = new Gui();
 		gui.create();
-		
+
 		//Start music
 		music = game.add.audio('music');
 		music.loopFull(0.8);
@@ -221,6 +230,10 @@ Game.prototype = {
 
 
 		enemies.forEach(function (enemy) {
+			if (game.physics.arcade.distanceBetween(enemy, player) < 30) {
+				console.log("ay we close");
+				game.physics.arcade.moveToXY(enemy, player.x+20, player.y, 300);
+			}
 			game.physics.arcade.collide(enemy, player, collisionDetection, null, this);
 			enemy.body.velocity.x = 0;
 			enemy.body.velocity.y = 0;
@@ -230,28 +243,20 @@ Game.prototype = {
 
 		//  Attacking?
 
-		attackButton.onDown.add(attackFunction, this);
+		attackButton.onDown.addOnce(attackFunction, this);
 		function attackFunction() {
 			if (player.facing === "left") {
 				  this.attackLeft();
-        	invisAttack.scale.x = 1;
-        	invisAttack.scale.y = 1;
-					game.physics.arcade.moveToXY(invisAttack, player.x-25, player.y, 300);
+
       } else if (player.facing === "right") {
         	this.attackRight();
-        	invisAttack.scale.x = 1;
-        	invisAttack.scale.y = 1;
-					game.physics.arcade.moveToXY(invisAttack, player.x+25, player.y, 300);
+
       } else if (player.facing === "up") {
         	this.attackUp();
-        	invisAttack.scale.x = 1;
-        	invisAttack.scale.y = 1;
-					game.physics.arcade.moveToXY(invisAttack, player.x, player.y-50, 300);
+
       } else if (player.facing === "down") {
         	this.attackDown();
-        	invisAttack.scale.x = 1;
-        	invisAttack.scale.y = 1;
-					game.physics.arcade.moveToXY(invisAttack, player.x, player.y+50, 300);
+
       }
       enemies.forEach(function(enemy){
         game.physics.arcade.collide(enemy, invisAttack, damageEnemy, null, this);
