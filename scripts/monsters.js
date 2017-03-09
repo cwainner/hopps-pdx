@@ -20,7 +20,7 @@ function createMonsters() {
 	game.physics.arcade.enable(enemies);
 	enemies.enableBody = true;
 	enemies.canAttack = true;
-    
+
 
 }
 
@@ -57,11 +57,13 @@ function damageEnemy(enemy, player) {
   enemy.health -= 1;
 	console.log(enemy.health);
   if (enemy.health < 1) {
+		enemy.animations.stop();
 		enemy.tint = 0x000000;
 		enemy.body.enable = false;
 		enemy.canAttack = false;
 		enemy.anchor.setTo(0.5, 0.5);
 		enemy.angle += 15;
+		enemy.body.angularAcceleration -= 200;
 		setTimeout(function () { enemy.destroy();}, 1000);
 
   }
@@ -77,4 +79,8 @@ function getBeer(beer, player) {
 	beer.destroy();
 	beerEffect = game.add.audio('drink')
 	beerEffect.play();
+}
+
+function moveBeer(beer, player) {
+	game.physics.arcade.moveToXY(beer, game.world.randomX, game.world.randomY, 100);
 }
