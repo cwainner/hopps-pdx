@@ -108,11 +108,11 @@ Game.prototype = {
 
 	preload: function () {
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		//game.load.image('background', 'assets/background.png');
 		game.load.tilemap('map', 'assets/collision_test.json', null, Phaser.Tilemap.TILED_JSON);
 		game.load.image('ground_1x1', 'assets/ground_1x1.png');
 		game.load.image('walls_1x2', 'assets/walls_1x2.png');
 		game.load.image('tiles2', 'assets/tiles2.png');
+        game.load.image('pdxcarpet', 'assets/pdxcarpet.png');
 		game.load.spritesheet('player', 'animations/player/PlayerWalkDown.png', 32, 46);
 		game.load.spritesheet('player2', 'animations/player/PlayerWalkUp.png', 32, 46);
 		game.load.spritesheet('player3', 'animations/player/PlayerWalkRight.png', 32, 48);
@@ -129,8 +129,26 @@ Game.prototype = {
 		// Enable physics
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 
+        //initiate map
+        map = game.add.tilemap('map');
+		map.addTilesetImage('ground_1x1');
+		map.addTilesetImage('walls_1x2');
+		map.addTilesetImage('tiles2');
+        map.addTilesetImage('pdxcarpet');
+        pdxcarpet = map.createLayer('Tile Layer 4');
+        map.addTilesetImage('ground_1x1');
+		map.addTilesetImage('walls_1x2');
+		map.addTilesetImage('tiles2');
+        map.addTilesetImage('pdxcarpet');
+                pdxcarpet = map.createLayer('Tile Layer 4');
+        layer = map.createLayer('Tile Layer 1');
+        enemyBounds = map.createLayer('Enemy');
+        enemyBounds.resizeWorld();
+        pdxcarpet.resizeWorld();
+        layer.resizeWorld();
+
 		// Create player
-		player = game.add.sprite(32, game.world.height - 150, 'player');
+		player = game.add.sprite(32, 200, 'player');
 		player.health = 10;
 
 		player.anchor.setTo(0.5,0.5);
@@ -153,17 +171,15 @@ Game.prototype = {
 		game.physics.arcade.enable(invisAttack);
 
 		// Create map
-		game.stage.backgroundColor = '#2d2d2d';
-		map = game.add.tilemap('map');
-		map.addTilesetImage('ground_1x1');
-		map.addTilesetImage('walls_1x2');
-		map.addTilesetImage('tiles2');
-		layer = map.createLayer('Tile Layer 1');
-    enemyBounds = map.createLayer('Enemy');
-    enemyBounds.resizeWorld();
-		layer.resizeWorld();
-		map.setCollisionBetween(1, 100, true, 'Tile Layer 1');
+
 		
+		
+
+		map.setCollisionBetween(1, 100, true, 'Tile Layer 1');
+
+		map.setCollisionBetween(1, 100, false, 'Tile Layer 4');
+    map.setCollisionBetween(1, 100, true,'Enemy');
+    enemyBounds.alpha = 0;
 		game.physics.arcade.enable(player);
 		game.camera.follow(player, Phaser.Camera.FOLLOW_TOPDOWN);
 		game.physics.arcade.setBoundsToWorld(true, true, true, true, false);
