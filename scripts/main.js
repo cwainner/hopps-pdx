@@ -218,7 +218,7 @@ Game.prototype = {
 		createMonsters();
 
         enemies.add(boss);
-        boss.health =1200;
+        boss.health =50;
 
         enemies.callAll('animations.add', 'animations', 'walk', [0,1,2,3], 5, true);
         enemies.callAll('play', null, 'walk');
