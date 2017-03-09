@@ -130,6 +130,7 @@ Game.prototype = {
 		game.load.audio('music', 'assets/music/backgroundMusic.mp3');
 		game.load.audio('swingSword', 'assets/sfx/knifeSlice.ogg');
 		game.load.audio('gameOver', 'assets/sfx/game_over.ogg');
+		game.load.audio('drink', 'assets/sfx/bottle.wav')
 	},
 	create: function () {
 		// Enable physics
@@ -240,6 +241,7 @@ Game.prototype = {
 		beers.forEach(function(beer) {
 			game.physics.arcade.collide(beer, player, getBeer, null, this);
 
+
 		});
 
 		enemies.forEach(function (enemy) {
@@ -259,7 +261,7 @@ Game.prototype = {
 		attackButton.onDown.addOnce(attackFunction, this);
 		function attackFunction() {
 			swingSword = game.add.audio('swingSword');
-
+			swingSword.volume = 0.005;
 			swingSword.play();
 			if (player.facing === "left") {
 				  this.attackLeft();

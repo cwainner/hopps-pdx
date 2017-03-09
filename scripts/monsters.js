@@ -28,6 +28,7 @@ function createBeer() {
 		game.physics.arcade.enable(beers);
 		beers.enableBody = true;
 	}
+
 }
 
 var invincibilityTimer = false;
@@ -71,4 +72,6 @@ function getBeer(beer, player) {
 	setTimeout(function () { player.scale.setTo(2,2);}, 500);
 	setTimeout(function () { player.scale.setTo(1,1); player.tint = 0xffffff;}, 750);
 	beer.destroy();
+	beerEffect = game.add.audio('drink')
+	beerEffect.play();
 }
