@@ -201,8 +201,20 @@ Game.prototype = {
 		game.physics.arcade.setBoundsToWorld(true, true, true, true, false);
 
 		// Create enemies
+        boss = game.add.sprite(1500, 1500, 'agent', 5);
+        boss.scale.set(2);
+        boss.smoothed = false;
+        boss.animations.add('walk');
+        boss.animations.play('walk', 5, true);
+        game.physics.arcade.enable(boss);
+        boss.enableBody = true;
+        boss.canAttack = true;
+        
 		enemies = game.add.group();
 		createMonsters();
+        enemies.add(boss);
+        boss.health =500;
+        
         enemies.callAll('animations.add', 'animations', 'walk', [0,1,2,3], 5, true);
         enemies.callAll('play', null, 'walk');
 		beers = game.add.group();
@@ -222,6 +234,9 @@ Game.prototype = {
 		music.volume = 0.5;
 	},
 	update: function () {
+        if (boss.alive === false) {
+            setTimeout(function() {game.state.start('GameWin')}, 2000);
+        }
 		game.physics.arcade.moveToObject(invisAttack, player, 100);
 
 		if(player.health <= 0){

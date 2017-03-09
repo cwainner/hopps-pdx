@@ -63,7 +63,7 @@ GameWin.prototype = {
 	
 	create: function(){
 		this.optionCount = 0;
-		game.add.existing(this.gameOverText);
+		game.add.existing(this.gameWinText);
     this.addMenuOption('Main Menu', function(e){
       location.reload();
     });
